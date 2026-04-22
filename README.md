@@ -2,7 +2,7 @@
 
 A website that's written, deployed, and updated entirely by an AI assistant.
 
-**Live site:** [View Demo](https://polite-glacier-0ea8c2510.5.azurestaticapps.net) *(Azure Static Web Apps)*
+**Live site:** [View Demo](https://polite-glacier-0ea8c2510.7.azurestaticapps.net) *(Azure Static Web Apps)*
 
 ## What is this?
 
