@@ -114,6 +114,16 @@
             text-decoration: none;
         }
         .project-meta a:hover { text-decoration: underline; }
+        .project-meta .try-it {
+            background: rgba(39, 202, 64, 0.2);
+            color: #27ca40;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        .project-meta .try-it:hover {
+            background: rgba(39, 202, 64, 0.3);
+            text-decoration: none;
+        }
         .empty-state {
             text-align: center;
             padding: 3rem;
@@ -169,14 +179,18 @@
                 const issues = await res.json();
                 
                 // Transform GitHub issues to project format
-                const projects = issues.map(issue => ({
-                    title: issue.title.replace('[Feature Request] ', ''),
-                    description: extractDescription(issue.body),
-                    issue: issue.number,
-                    status: issue.state === 'closed' ? 'done' : 'in-progress',
-                    date: issue.created_at.split('T')[0],
-                    url: issue.html_url
-                }));
+                const projects = issues.map(issue => {
+                    const title = issue.title.replace('[Feature Request] ', '');
+                    return {
+                        title: title,
+                        description: extractDescription(issue.body),
+                        issue: issue.number,
+                        status: issue.state === 'closed' ? 'done' : 'in-progress',
+                        date: issue.created_at.split('T')[0],
+                        url: issue.html_url,
+                        projectUrl: getProjectUrl(title)
+                    };
+                });
                 
                 const done = projects.filter(p => p.status === 'done').length;
                 const inProgress = projects.filter(p => p.status === 'in-progress').length;
@@ -201,6 +215,7 @@
                         <div class="project-meta">
                             <span>📅 ${p.date}</span>
                             <a href="${p.url}" target="_blank">Issue #${p.issue}</a>
+                            ${p.status === 'done' && p.projectUrl ? `<a href="${p.projectUrl}" class="try-it">Try it →</a>` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -208,6 +223,21 @@
                 document.getElementById('projectsGrid').innerHTML = 
                     '<div class="empty-state">Could not load projects — try refreshing</div>';
             }
+        }
+        
+        // Map of project titles to their URLs (for projects with standalone pages)
+        function getProjectUrl(title) {
+            const slug = title.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '');
+            
+            // Known projects with pages
+            const knownProjects = {
+                'simple-calculator': '/projects/calculator/',
+                'calculator': '/projects/calculator/'
+            };
+            
+            return knownProjects[slug] || null;
         }
         
         function extractDescription(body) {
