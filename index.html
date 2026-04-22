@@ -14,12 +14,13 @@
             background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
             font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
             color: #e0e0e0;
-            overflow: hidden;
+            overflow-x: hidden;
         }
         .container {
             text-align: center;
             padding: 2rem;
             max-width: 650px;
+            width: 100%;
         }
         .terminal {
             background: rgba(0, 0, 0, 0.6);
@@ -110,6 +111,82 @@
         }
         .build-value.highlight { color: #27ca40; }
         
+        /* Feature Request Form */
+        .feature-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #333;
+        }
+        .feature-section h2 {
+            font-size: 1rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        .feature-section p {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .form-group {
+            margin-bottom: 0.75rem;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 0.25rem;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .form-status {
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        .form-status.success { color: #27ca40; }
+        .form-status.error { color: #ff5f56; }
+        
         .log {
             text-align: left;
             font-size: 0.8rem;
@@ -179,6 +256,28 @@
                 <div><span class="time">[now]</span> <span>You're looking at it</span> 👀</div>
             </div>
             
+            <div class="feature-section">
+                <h2>💡 Request a Feature</h2>
+                <p>Got an idea? Submit it and the bot might build it.</p>
+                
+                <form id="featureForm">
+                    <div class="form-group">
+                        <label for="name">Your name (optional)</label>
+                        <input type="text" id="name" name="name" placeholder="Anonymous">
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Feature title *</label>
+                        <input type="text" id="title" name="title" placeholder="Add dark mode toggle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" placeholder="Describe what you'd like to see..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Request</button>
+                </form>
+                <div id="formStatus" class="form-status"></div>
+            </div>
+            
             <div class="footer">
                 Powered by <a href="https://github.com/openclaw/openclaw">OpenClaw</a> 
                 · Built with 🤖 by Hans
@@ -226,6 +325,47 @@
                 `;
             }
         }
+        
+        document.getElementById('featureForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button');
+            const status = document.getElementById('formStatus');
+            
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+            status.textContent = '';
+            status.className = 'form-status';
+            
+            try {
+                const res = await fetch('/api/feature-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: form.name.value,
+                        title: form.title.value,
+                        description: form.description.value
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (res.ok) {
+                    status.textContent = `✓ Submitted! Issue #${data.issueNumber} created.`;
+                    status.className = 'form-status success';
+                    form.reset();
+                } else {
+                    throw new Error(data.error || 'Submission failed');
+                }
+            } catch (err) {
+                status.textContent = `✗ ${err.message}`;
+                status.className = 'form-status error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Submit Request';
+            }
+        });
+        
         loadBuildInfo();
     </script>
 </body>
