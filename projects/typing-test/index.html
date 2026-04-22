@@ -338,12 +338,10 @@
             clearInterval(timerInterval);
             document.getElementById('typingInput').disabled = true;
             
-            const elapsed = (Date.now() - startTime) / 1000 / 60;
-            const allCorrect = cumulativeCorrectChars + correctChars;
+            // Use the same stats that were showing in the live display
+            const wpm = document.getElementById('wpm').textContent;
+            const accuracy = document.getElementById('accuracy').textContent;
             const allTotal = cumulativeTotalChars + totalChars;
-            const wordsTyped = allCorrect / 5;
-            const wpm = elapsed > 0 ? Math.round(wordsTyped / elapsed) : 0;
-            const accuracy = allTotal > 0 ? Math.round((allCorrect / allTotal) * 100) : 100;
             
             document.getElementById('finalWpm').textContent = wpm;
             document.getElementById('finalAccuracy').textContent = accuracy;
