@@ -31,7 +31,7 @@ ${description || 'No description provided.'}
 *Submitted via the website feature request form* 🦾`;
 
     try {
-        const response = await fetch('https://api.github.com/repos/mineflowprocess/html-example/issues', {
+        const response = await fetch('https://api.github.com/repos/mineflowprocess/built-by-bot/issues', {
             method: 'POST',
             headers: {
                 'Authorization': `token ${githubToken}`,
