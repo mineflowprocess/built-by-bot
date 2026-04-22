@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⌨️ Typing Speed Test - Built by Bot</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: #e0e0e0;
+            padding: 1rem;
+        }
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+        }
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        .back-link:hover { text-decoration: underline; }
+        
+        .game-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 0 60px rgba(102, 126, 234, 0.3);
+        }
+        .header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27ca40; }
+        
+        h1 {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-value.good { color: #27ca40; }
+        .stat-value.warning { color: #ffc107; }
+        .stat-value.bad { color: #ff5f56; }
+        .stat-label {
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .text-display {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: left;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            min-height: 120px;
+        }
+        .char { color: #555; }
+        .char.correct { color: #27ca40; }
+        .char.incorrect { color: #ff5f56; background: rgba(255, 95, 86, 0.2); }
+        .char.current { 
+            border-bottom: 2px solid #667eea;
+            color: #e0e0e0;
+        }
+        
+        .input-area {
+            position: relative;
+        }
+        #typingInput {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #333;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        #typingInput:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        #typingInput:disabled {
+            opacity: 0.5;
+        }
+        
+        .btn {
+            margin-top: 1rem;
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .results {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(39, 202, 64, 0.1);
+            border: 1px solid rgba(39, 202, 64, 0.3);
+            border-radius: 8px;
+        }
+        .results h2 {
+            color: #27ca40;
+            margin-bottom: 1rem;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        
+        .footer {
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: #444;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .issue-link {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+        }
+        .issue-link a {
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to home</a>
+        
+        <div class="game-box">
+            <div class="header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            
+            <h1>⌨️ Typing Speed Test</h1>
+            <p class="subtitle">Test your typing speed and accuracy</p>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="wpm">0</div>
+                    <div class="stat-label">WPM</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="accuracy">100</div>
+                    <div class="stat-label">Accuracy %</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="time">60</div>
+                    <div class="stat-label">Seconds</div>
+                </div>
+            </div>
+            
+            <div class="text-display" id="textDisplay"></div>
+            
+            <div class="input-area">
+                <input type="text" id="typingInput" placeholder="Click here and start typing..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>
+            
+            <button class="btn" id="restartBtn" onclick="restart()">Restart</button>
+            
+            <div class="results" id="results">
+                <h2>🎉 Test Complete!</h2>
+                <div class="results-grid">
+                    <div class="stat">
+                        <div class="stat-value" id="finalWpm">0</div>
+                        <div class="stat-label">Final WPM</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="finalAccuracy">0</div>
+                        <div class="stat-label">Accuracy %</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="finalChars">0</div>
+                        <div class="stat-label">Characters</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="issue-link">
+                Built from <a href="https://github.com/mineflowprocess/built-by-bot/issues/5" target="_blank">Issue #5</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <a href="/projects/">See all projects</a> · 
+            Built with 🤖 by Hans
+        </div>
+    </div>
+
+    <script>
+        const sentences = [
+            "The quick brown fox jumps over the lazy dog near the riverbank.",
+            "Programming is the art of telling a computer what to do step by step.",
+            "Coffee is the fuel that powers developers through long coding sessions.",
+            "Every great developer was once a beginner who refused to give up.",
+            "The best way to predict the future is to invent it yourself today.",
+            "Simple code is better than clever code that nobody can understand.",
+            "Debugging is like being a detective in a crime movie where you are also the murderer.",
+            "First solve the problem then write the code to implement the solution.",
+            "Code is like humor when you have to explain it then it is bad.",
+            "The only way to learn programming is by writing more and more code."
+        ];
+        
+        let currentText = '';
+        let currentIndex = 0;
+        let startTime = null;
+        let timerInterval = null;
+        let timeLeft = 60;
+        let totalChars = 0;
+        let correctChars = 0;
+        let isFinished = false;
+        
+        function init() {
+            currentText = sentences[Math.floor(Math.random() * sentences.length)];
+            renderText();
+            document.getElementById('typingInput').value = '';
+            document.getElementById('typingInput').disabled = false;
+            document.getElementById('typingInput').focus();
+        }
+        
+        function renderText() {
+            const display = document.getElementById('textDisplay');
+            display.innerHTML = currentText.split('').map((char, i) => {
+                let className = 'char';
+                if (i < currentIndex) {
+                    className += document.getElementById('typingInput').value[i] === char ? ' correct' : ' incorrect';
+                } else if (i === currentIndex) {
+                    className += ' current';
+                }
+                return `<span class="${className}">${char === ' ' ? '&nbsp;' : char}</span>`;
+            }).join('');
+        }
+        
+        function startTimer() {
+            if (startTime) return;
+            startTime = Date.now();
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                timeLeft = Math.max(0, 60 - elapsed);
+                document.getElementById('time').textContent = timeLeft;
+                
+                if (timeLeft === 0) {
+                    endTest();
+                }
+                
+                updateStats();
+            }, 100);
+        }
+        
+        function updateStats() {
+            if (!startTime) return;
+            
+            const elapsed = (Date.now() - startTime) / 1000 / 60; // minutes
+            const wordsTyped = correctChars / 5; // standard: 5 chars = 1 word
+            const wpm = elapsed > 0 ? Math.round(wordsTyped / elapsed) : 0;
+            const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
+            
+            document.getElementById('wpm').textContent = wpm;
+            document.getElementById('accuracy').textContent = accuracy;
+            
+            // Color coding
+            const wpmEl = document.getElementById('wpm');
+            wpmEl.className = 'stat-value' + (wpm >= 60 ? ' good' : wpm >= 30 ? ' warning' : '');
+            
+            const accEl = document.getElementById('accuracy');
+            accEl.className = 'stat-value' + (accuracy >= 95 ? ' good' : accuracy >= 80 ? ' warning' : ' bad');
+        }
+        
+        function endTest() {
+            isFinished = true;
+            clearInterval(timerInterval);
+            document.getElementById('typingInput').disabled = true;
+            
+            const elapsed = (Date.now() - startTime) / 1000 / 60;
+            const wordsTyped = correctChars / 5;
+            const wpm = elapsed > 0 ? Math.round(wordsTyped / elapsed) : 0;
+            const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
+            
+            document.getElementById('finalWpm').textContent = wpm;
+            document.getElementById('finalAccuracy').textContent = accuracy;
+            document.getElementById('finalChars').textContent = totalChars;
+            document.getElementById('results').style.display = 'block';
+        }
+        
+        function restart() {
+            currentIndex = 0;
+            startTime = null;
+            timeLeft = 60;
+            totalChars = 0;
+            correctChars = 0;
+            isFinished = false;
+            clearInterval(timerInterval);
+            
+            document.getElementById('time').textContent = '60';
+            document.getElementById('wpm').textContent = '0';
+            document.getElementById('accuracy').textContent = '100';
+            document.getElementById('results').style.display = 'none';
+            
+            init();
+        }
+        
+        document.getElementById('typingInput').addEventListener('input', (e) => {
+            if (isFinished) return;
+            
+            startTimer();
+            
+            const typed = e.target.value;
+            currentIndex = typed.length;
+            
+            // Count correct/total
+            totalChars = typed.length;
+            correctChars = 0;
+            for (let i = 0; i < typed.length; i++) {
+                if (typed[i] === currentText[i]) {
+                    correctChars++;
+                }
+            }
+            
+            renderText();
+            updateStats();
+            
+            // Check if completed the text
+            if (typed === currentText) {
+                // Load next sentence
+                currentText = sentences[Math.floor(Math.random() * sentences.length)];
+                e.target.value = '';
+                currentIndex = 0;
+                renderText();
+            }
+        });
+        
+        document.getElementById('typingInput').addEventListener('keydown', (e) => {
+            // Prevent backspace from navigating away
+            if (e.key === 'Tab') {
+                e.preventDefault();
+            }
+        });
+        
+        init();
+    </script>
+</body>
+</html>
