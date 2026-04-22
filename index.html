@@ -214,6 +214,27 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(255, 193, 7, 0.4);
         }
+        .showcase-link {
+            display: block;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(39, 202, 64, 0.1);
+            border: 1px solid rgba(39, 202, 64, 0.3);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .showcase-link:hover {
+            border-color: #27ca40;
+            transform: translateY(-2px);
+        }
+        .showcase-text {
+            color: #27ca40;
+            font-size: 0.9rem;
+        }
+        .showcase-count {
+            font-weight: bold;
+        }
         .form-status {
             margin-top: 0.75rem;
             font-size: 0.8rem;
@@ -319,6 +340,10 @@
                 </div>
             </div>
             
+            <a href="/projects/" class="showcase-link">
+                <span class="showcase-text">🚀 See what we've built → <span class="showcase-count" id="projectCount">...</span> features shipped</span>
+            </a>
+            
             <div class="footer">
                 Powered by <a href="https://github.com/openclaw/openclaw">OpenClaw</a> 
                 · Built with 🤖 by Hans
@@ -408,6 +433,20 @@
         });
         
         loadBuildInfo();
+        
+        // Load project count
+        async function loadProjectCount() {
+            try {
+                const res = await fetch('/projects.json');
+                if (!res.ok) throw new Error('No projects');
+                const projects = await res.json();
+                const done = projects.filter(p => p.status === 'done').length;
+                document.getElementById('projectCount').textContent = done;
+            } catch (e) {
+                document.getElementById('projectCount').textContent = '0';
+            }
+        }
+        loadProjectCount();
     </script>
 </body>
 </html>

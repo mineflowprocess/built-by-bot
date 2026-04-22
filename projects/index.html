@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦾 Built by Bot - Projects</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: #e0e0e0;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        .back-link:hover { text-decoration: underline; }
+        h1 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        .subtitle {
+            color: #888;
+            font-size: 0.95rem;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            color: #27ca40;
+            font-weight: bold;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .projects-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        .project-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .project-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        .project-title {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+        }
+        .project-status {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .project-status.done {
+            background: rgba(39, 202, 64, 0.2);
+            color: #27ca40;
+        }
+        .project-status.in-progress {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        .project-description {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .project-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: #555;
+        }
+        .project-meta a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .project-meta a:hover { text-decoration: underline; }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #555;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.75rem;
+            color: #444;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to home</a>
+            <h1>🦾 What We've Built</h1>
+            <p class="subtitle">Every feature here started as a request</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="totalProjects">-</div>
+                <div class="stat-label">Features Shipped</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="inProgress">-</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid">
+            <div class="empty-state">Loading projects...</div>
+        </div>
+
+        <div class="footer">
+            <a href="/">← Request a feature</a> · 
+            Powered by <a href="https://github.com/openclaw/openclaw">OpenClaw</a>
+        </div>
+    </div>
+
+    <script>
+        async function loadProjects() {
+            try {
+                const res = await fetch('/projects.json');
+                if (!res.ok) throw new Error('Failed to load');
+                const projects = await res.json();
+                
+                const done = projects.filter(p => p.status === 'done').length;
+                const inProgress = projects.filter(p => p.status === 'in-progress').length;
+                
+                document.getElementById('totalProjects').textContent = done;
+                document.getElementById('inProgress').textContent = inProgress;
+                
+                const grid = document.getElementById('projectsGrid');
+                
+                if (projects.length === 0) {
+                    grid.innerHTML = '<div class="empty-state">No projects yet. Be the first to request one!</div>';
+                    return;
+                }
+                
+                grid.innerHTML = projects.map(p => `
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="project-title">${p.title}</span>
+                            <span class="project-status ${p.status}">${p.status === 'done' ? '✓ Done' : '⏳ Building'}</span>
+                        </div>
+                        <p class="project-description">${p.description}</p>
+                        <div class="project-meta">
+                            <span>📅 ${p.date}</span>
+                            ${p.issue ? `<a href="https://github.com/mineflowprocess/built-by-bot/issues/${p.issue}" target="_blank">Issue #${p.issue}</a>` : ''}
+                            ${p.url ? `<a href="${p.url}">View →</a>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                document.getElementById('projectsGrid').innerHTML = 
+                    '<div class="empty-state">Could not load projects</div>';
+            }
+        }
+        
+        loadProjects();
+    </script>
+</body>
+</html>
