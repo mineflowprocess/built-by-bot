@@ -434,16 +434,15 @@
         
         loadBuildInfo();
         
-        // Load project count
+        // Load project count from GitHub
         async function loadProjectCount() {
             try {
-                const res = await fetch('/projects.json');
+                const res = await fetch('https://api.github.com/repos/mineflowprocess/built-by-bot/issues?labels=feature-request&state=closed&per_page=100');
                 if (!res.ok) throw new Error('No projects');
-                const projects = await res.json();
-                const done = projects.filter(p => p.status === 'done').length;
-                document.getElementById('projectCount').textContent = done;
+                const issues = await res.json();
+                document.getElementById('projectCount').textContent = issues.length;
             } catch (e) {
-                document.getElementById('projectCount').textContent = '0';
+                document.getElementById('projectCount').textContent = '?';
             }
         }
         loadProjectCount();
