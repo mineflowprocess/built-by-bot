@@ -93,8 +93,14 @@
             font-size: 1.1rem;
             line-height: 1.8;
             min-height: 120px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
         }
-        .char { color: #555; }
+        .char { 
+            color: #555;
+            display: inline;
+        }
         .char.correct { color: #27ca40; }
         .char.incorrect { color: #ff5f56; background: rgba(255, 95, 86, 0.2); }
         .char.current { 
@@ -284,7 +290,7 @@
                 } else if (i === currentIndex) {
                     className += ' current';
                 }
-                return `<span class="${className}">${char === ' ' ? '&nbsp;' : char}</span>`;
+                return `<span class="${className}">${char}</span>`;
             }).join('');
         }
         
