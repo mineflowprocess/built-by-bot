@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧮 Calculator - Built by Bot</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: #e0e0e0;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        .back-link:hover { text-decoration: underline; }
+        
+        .calculator {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 0 60px rgba(102, 126, 234, 0.3);
+            width: 300px;
+        }
+        .header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #333;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27ca40; }
+        
+        .display {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: right;
+        }
+        .display-previous {
+            font-size: 0.8rem;
+            color: #666;
+            min-height: 1.2rem;
+        }
+        .display-current {
+            font-size: 2rem;
+            color: #e0e0e0;
+            word-break: break-all;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+        .btn {
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-family: inherit;
+            border: 1px solid #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .btn-number {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+        }
+        .btn-number:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .btn-operator {
+            background: rgba(102, 126, 234, 0.3);
+            color: #667eea;
+        }
+        .btn-operator:hover {
+            background: rgba(102, 126, 234, 0.5);
+        }
+        .btn-equals {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            grid-column: span 2;
+        }
+        .btn-equals:hover {
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn-clear {
+            background: rgba(255, 95, 86, 0.3);
+            color: #ff5f56;
+        }
+        .btn-clear:hover {
+            background: rgba(255, 95, 86, 0.5);
+        }
+        
+        .footer {
+            margin-top: 1rem;
+            font-size: 0.7rem;
+            color: #444;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .issue-link {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+        }
+        .issue-link a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .issue-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to home</a>
+        
+        <div class="calculator">
+            <div class="header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            
+            <div class="display">
+                <div class="display-previous" id="previous"></div>
+                <div class="display-current" id="current">0</div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-clear" onclick="clearAll()">C</button>
+                <button class="btn btn-operator" onclick="backspace()">⌫</button>
+                <button class="btn btn-operator" onclick="setOperator('%')">%</button>
+                <button class="btn btn-operator" onclick="setOperator('/')">÷</button>
+                
+                <button class="btn btn-number" onclick="appendNumber('7')">7</button>
+                <button class="btn btn-number" onclick="appendNumber('8')">8</button>
+                <button class="btn btn-number" onclick="appendNumber('9')">9</button>
+                <button class="btn btn-operator" onclick="setOperator('*')">×</button>
+                
+                <button class="btn btn-number" onclick="appendNumber('4')">4</button>
+                <button class="btn btn-number" onclick="appendNumber('5')">5</button>
+                <button class="btn btn-number" onclick="appendNumber('6')">6</button>
+                <button class="btn btn-operator" onclick="setOperator('-')">−</button>
+                
+                <button class="btn btn-number" onclick="appendNumber('1')">1</button>
+                <button class="btn btn-number" onclick="appendNumber('2')">2</button>
+                <button class="btn btn-number" onclick="appendNumber('3')">3</button>
+                <button class="btn btn-operator" onclick="setOperator('+')">+</button>
+                
+                <button class="btn btn-number" onclick="appendNumber('0')">0</button>
+                <button class="btn btn-number" onclick="appendNumber('.')">.</button>
+                <button class="btn btn-equals" onclick="calculate()">=</button>
+            </div>
+            
+            <div class="issue-link">
+                Built from <a href="https://github.com/mineflowprocess/built-by-bot/issues/4" target="_blank">Issue #4</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <a href="/projects/">See all projects</a> · 
+            Built with 🤖 by Hans
+        </div>
+    </div>
+
+    <script>
+        let currentValue = '0';
+        let previousValue = '';
+        let operator = null;
+        let shouldResetScreen = false;
+
+        function updateDisplay() {
+            document.getElementById('current').textContent = currentValue;
+            document.getElementById('previous').textContent = previousValue;
+        }
+
+        function appendNumber(num) {
+            if (shouldResetScreen) {
+                currentValue = '';
+                shouldResetScreen = false;
+            }
+            if (num === '.' && currentValue.includes('.')) return;
+            if (currentValue === '0' && num !== '.') {
+                currentValue = num;
+            } else {
+                currentValue += num;
+            }
+            updateDisplay();
+        }
+
+        function setOperator(op) {
+            if (operator !== null) calculate();
+            previousValue = currentValue + ' ' + getDisplayOperator(op);
+            operator = op;
+            shouldResetScreen = true;
+            updateDisplay();
+        }
+
+        function getDisplayOperator(op) {
+            const ops = { '+': '+', '-': '−', '*': '×', '/': '÷', '%': '%' };
+            return ops[op] || op;
+        }
+
+        function calculate() {
+            if (operator === null || shouldResetScreen) return;
+            const prev = parseFloat(previousValue);
+            const curr = parseFloat(currentValue);
+            let result;
+            
+            switch (operator) {
+                case '+': result = prev + curr; break;
+                case '-': result = prev - curr; break;
+                case '*': result = prev * curr; break;
+                case '/': result = curr === 0 ? 'Error' : prev / curr; break;
+                case '%': result = prev % curr; break;
+                default: return;
+            }
+            
+            currentValue = result === 'Error' ? 'Error' : String(parseFloat(result.toFixed(10)));
+            previousValue = '';
+            operator = null;
+            shouldResetScreen = true;
+            updateDisplay();
+        }
+
+        function clearAll() {
+            currentValue = '0';
+            previousValue = '';
+            operator = null;
+            shouldResetScreen = false;
+            updateDisplay();
+        }
+
+        function backspace() {
+            if (currentValue.length === 1 || currentValue === 'Error') {
+                currentValue = '0';
+            } else {
+                currentValue = currentValue.slice(0, -1);
+            }
+            updateDisplay();
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') appendNumber(e.key);
+            else if (e.key === '.') appendNumber('.');
+            else if (e.key === '+') setOperator('+');
+            else if (e.key === '-') setOperator('-');
+            else if (e.key === '*') setOperator('*');
+            else if (e.key === '/') { e.preventDefault(); setOperator('/'); }
+            else if (e.key === '%') setOperator('%');
+            else if (e.key === 'Enter' || e.key === '=') calculate();
+            else if (e.key === 'Escape') clearAll();
+            else if (e.key === 'Backspace') backspace();
+        });
+    </script>
+</body>
+</html>
