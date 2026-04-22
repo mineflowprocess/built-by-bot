@@ -19,6 +19,16 @@ jobs:
         with:
           submodules: true
           lfs: false
+      - name: Inject build info
+        run: |
+          echo '{
+            "commit": "'${{ github.sha }}'",
+            "shortCommit": "'$(echo ${{ github.sha }} | cut -c1-7)'",
+            "message": "'$(git log -1 --pretty=%s | sed 's/"/\\"/g')'",
+            "author": "'${{ github.actor }}'",
+            "timestamp": "'$(git log -1 --pretty=%cI)'",
+            "buildTime": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"
+          }' > build-info.json
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
