@@ -179,6 +179,41 @@
             cursor: not-allowed;
             transform: none;
         }
+        .priority-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+        }
+        .priority-section h3 {
+            font-size: 0.9rem;
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+        }
+        .priority-section p {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 0.75rem;
+        }
+        .priority-btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            border: none;
+            border-radius: 6px;
+            color: #000;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .priority-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.4);
+        }
         .form-status {
             margin-top: 0.75rem;
             font-size: 0.8rem;
@@ -276,6 +311,12 @@
                     <button type="submit" class="submit-btn">Submit Request</button>
                 </form>
                 <div id="formStatus" class="form-status"></div>
+                
+                <div class="priority-section">
+                    <h3>⚡ Priority Request — €5</h3>
+                    <p>Jump the queue! Priority requests get built first.</p>
+                    <a href="https://ko-fi.com/REPLACE_WITH_YOUR_KOFI" target="_blank" class="priority-btn">Get Priority →</a>
+                </div>
             </div>
             
             <div class="footer">
