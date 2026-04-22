@@ -271,6 +271,8 @@
         let timeLeft = 60;
         let totalChars = 0;
         let correctChars = 0;
+        let cumulativeTotalChars = 0;
+        let cumulativeCorrectChars = 0;
         let isFinished = false;
         
         function init() {
@@ -314,9 +316,11 @@
             if (!startTime) return;
             
             const elapsed = (Date.now() - startTime) / 1000 / 60; // minutes
-            const wordsTyped = correctChars / 5; // standard: 5 chars = 1 word
+            const allCorrect = cumulativeCorrectChars + correctChars;
+            const allTotal = cumulativeTotalChars + totalChars;
+            const wordsTyped = allCorrect / 5; // standard: 5 chars = 1 word
             const wpm = elapsed > 0 ? Math.round(wordsTyped / elapsed) : 0;
-            const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
+            const accuracy = allTotal > 0 ? Math.round((allCorrect / allTotal) * 100) : 100;
             
             document.getElementById('wpm').textContent = wpm;
             document.getElementById('accuracy').textContent = accuracy;
@@ -335,13 +339,15 @@
             document.getElementById('typingInput').disabled = true;
             
             const elapsed = (Date.now() - startTime) / 1000 / 60;
-            const wordsTyped = correctChars / 5;
+            const allCorrect = cumulativeCorrectChars + correctChars;
+            const allTotal = cumulativeTotalChars + totalChars;
+            const wordsTyped = allCorrect / 5;
             const wpm = elapsed > 0 ? Math.round(wordsTyped / elapsed) : 0;
-            const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
+            const accuracy = allTotal > 0 ? Math.round((allCorrect / allTotal) * 100) : 100;
             
             document.getElementById('finalWpm').textContent = wpm;
             document.getElementById('finalAccuracy').textContent = accuracy;
-            document.getElementById('finalChars').textContent = totalChars;
+            document.getElementById('finalChars').textContent = allTotal;
             document.getElementById('results').style.display = 'block';
         }
         
@@ -351,6 +357,8 @@
             timeLeft = 60;
             totalChars = 0;
             correctChars = 0;
+            cumulativeTotalChars = 0;
+            cumulativeCorrectChars = 0;
             isFinished = false;
             clearInterval(timerInterval);
             
@@ -384,6 +392,12 @@
             
             // Check if completed the text
             if (typed === currentText) {
+                // Add current stats to cumulative before resetting
+                cumulativeCorrectChars += correctChars;
+                cumulativeTotalChars += totalChars;
+                correctChars = 0;
+                totalChars = 0;
+                
                 // Load next sentence
                 currentText = sentences[Math.floor(Math.random() * sentences.length)];
                 e.target.value = '';
