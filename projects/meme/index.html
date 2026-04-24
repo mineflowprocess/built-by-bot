@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>😂 Meme Generator - Built by Bot</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: #e0e0e0;
+            padding: 2rem;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        .back-link:hover { text-decoration: underline; }
+        
+        .meme-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 0 60px rgba(102, 126, 234, 0.3);
+        }
+        
+        .header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #333;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27ca40; }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 2rem;
+        }
+        
+        .meme-display {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            word-wrap: break-word;
+            line-height: 1.6;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        input, textarea {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+            border: 1px solid #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .meme-templates {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+        }
+        
+        .template-label {
+            font-size: 0.8rem;
+            color: #999;
+            text-align: left;
+            margin-bottom: 0.5rem;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.5rem;
+        }
+        
+        .template-btn {
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .template-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .footer {
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #444;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .issue-link {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+        }
+        .issue-link a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .issue-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to home</a>
+        
+        <div class="meme-box">
+            <div class="header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            
+            <h1>😂 Meme Generator</h1>
+            <p class="subtitle">Create a meme to make Roberto laugh</p>
+            
+            <div class="meme-display" id="memePreview">
+                Type something hilarious →
+            </div>
+            
+            <div class="controls">
+                <textarea id="memeText" placeholder="Enter your meme text here..." maxlength="200"></textarea>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="downloadMeme()">📥 Download</button>
+                    <button class="btn btn-secondary" onclick="copyToClipboard()">📋 Copy</button>
+                    <button class="btn btn-secondary" onclick="clearMeme()">🗑️ Clear</button>
+                </div>
+            </div>
+            
+            <div class="meme-templates">
+                <div class="template-label">Quick templates:</div>
+                <div class="template-grid">
+                    <button class="template-btn" onclick="insertTemplate('Me: studying\nAlso me: watching cat videos')">Study Meme</button>
+                    <button class="template-btn" onclick="insertTemplate('POV: You\nactually read the\nterms & conditions')">POV</button>
+                    <button class="template-btn" onclick="insertTemplate('Me at 3am:\nWhy did I say that\nin 2009?')">3am Thoughts</button>
+                    <button class="template-btn" onclick="insertTemplate('Nobody:\nAbsolutely nobody:\nMe:')">Nobody Asked</button>
+                    <button class="template-btn" onclick="insertTemplate('Expectation: 💪\nReality: 💀')">Expectation vs Reality</button>
+                    <button class="template-btn" onclick="insertTemplate('BREAKING NEWS:\nI am pain')">Breaking News</button>
+                </div>
+            </div>
+            
+            <div class="issue-link">
+                Built from <a href="https://github.com/mineflowprocess/built-by-bot/issues/13" target="_blank">Issue #13</a> · For Roberto 🎭
+            </div>
+        </div>
+        
+        <div class="footer">
+            <a href="/projects/">See all projects</a> · 
+            Built with 🤖 by Hans
+        </div>
+    </div>
+
+    <script>
+        const memeText = document.getElementById('memeText');
+        const memePreview = document.getElementById('memePreview');
+
+        // Update preview in real-time
+        memeText.addEventListener('input', updatePreview);
+
+        function updatePreview() {
+            const text = memeText.value || 'Type something hilarious →';
+            memePreview.textContent = text;
+        }
+
+        function insertTemplate(text) {
+            memeText.value = text;
+            updatePreview();
+            memeText.focus();
+        }
+
+        function clearMeme() {
+            memeText.value = '';
+            updatePreview();
+        }
+
+        function copyToClipboard() {
+            const text = memeText.value || 'Type something hilarious →';
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    btn.textContent = original;
+                }, 1500);
+            });
+        }
+
+        function downloadMeme() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = 600;
+            canvas.height = 400;
+            
+            // Draw background
+            const gradient = ctx.createLinearGradient(0, 0, 600, 400);
+            gradient.addColorStop(0, '#0f0f23');
+            gradient.addColorStop(0.5, '#1a1a3e');
+            gradient.addColorStop(1, '#0f0f23');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw border
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+            
+            // Draw text
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Word wrap
+            const text = memeText.value || 'Made with ❤️ by Bot';
+            const words = text.split('\n');
+            const lineHeight = 50;
+            const startY = canvas.height / 2 - (words.length * lineHeight) / 2;
+            
+            words.forEach((line, i) => {
+                // Add text shadow
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                ctx.fillText(line, canvas.width / 2 + 2, startY + i * lineHeight + 2);
+                
+                // Draw text
+                ctx.fillStyle = '#fff';
+                ctx.fillText(line, canvas.width / 2, startY + i * lineHeight);
+            });
+            
+            // Download
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'meme.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        // Focus on load
+        memeText.focus();
+    </script>
+</body>
+</html>
