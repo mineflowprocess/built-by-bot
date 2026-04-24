@@ -3,407 +3,935 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🦾 Built by Bot</title>
+    <title>🦾 Built by Bot — An AI builds whatever you ask</title>
+    <meta name="description" content="Submit a feature request. An AI assistant builds it. That's it. No humans writing code.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #08081a;
+            --surface: #0f0f2a;
+            --surface-light: #161640;
+            --border: #252560;
+            --accent: #667eea;
+            --accent-glow: rgba(102, 126, 234, 0.25);
+            --green: #27ca40;
+            --green-glow: rgba(39, 202, 64, 0.2);
+            --pink: #ff6b9d;
+            --yellow: #ffc107;
+            --text: #e8e8f0;
+            --text-dim: #7777aa;
+            --text-faint: #444466;
+            --radius: 16px;
+        }
+
         body {
+            background: var(--bg);
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ─── Navigation ─── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8, 8, 26, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(37, 37, 96, 0.5);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .nav-brand span {
+            font-size: 1.4rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        .nav-links .gh-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+        .nav-links .gh-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--accent);
+        }
+
+        /* ─── Hero ─── */
+        .hero {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
-            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-            color: #e0e0e0;
-            overflow-x: hidden;
-        }
-        .container {
             text-align: center;
-            padding: 2rem;
-            max-width: 650px;
-            width: 100%;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(102, 126, 234, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(255, 107, 157, 0.08) 0%, transparent 50%),
+                var(--bg);
         }
-        .terminal {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 0 60px rgba(102, 126, 234, 0.3);
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(transparent, var(--bg));
+            pointer-events: none;
         }
-        .header {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #333;
-        }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .dot.red { background: #ff5f56; }
-        .dot.yellow { background: #ffbd2e; }
-        .dot.green { background: #27ca40; }
-        
-        .bot-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        h1 {
-            font-size: 1.8rem;
-            color: #667eea;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
-        }
-        .tagline {
-            color: #888;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .status {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        .status-line {
-            display: flex;
+
+        .live-badge {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
-            color: #27ca40;
-            font-size: 0.9rem;
-        }
-        .blink {
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        .build-info {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            text-align: left;
-            font-size: 0.8rem;
-        }
-        .build-row {
-            display: flex;
-            padding: 0.3rem 0;
-            border-bottom: 1px solid #222;
-        }
-        .build-row:last-child { border-bottom: none; }
-        .build-label {
-            color: #667eea;
-            width: 100px;
-            flex-shrink: 0;
-        }
-        .build-value {
-            color: #aaa;
-            word-break: break-all;
-        }
-        .build-value.highlight { color: #27ca40; }
-        
-        /* Feature Request Form */
-        .feature-section {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #333;
-        }
-        .feature-section h2 {
-            font-size: 1rem;
-            color: #667eea;
-            margin-bottom: 0.5rem;
-        }
-        .feature-section p {
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-        .form-group {
-            margin-bottom: 0.75rem;
-            text-align: left;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            color: #888;
-            margin-bottom: 0.25rem;
-        }
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.6rem;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            border-radius: 6px;
-            color: #e0e0e0;
-            font-family: inherit;
-            font-size: 0.85rem;
-            transition: border-color 0.2s;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        .submit-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 6px;
-            color: white;
-            font-family: inherit;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .priority-section {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid rgba(255, 193, 7, 0.3);
-            border-radius: 8px;
-        }
-        .priority-section h3 {
-            font-size: 0.9rem;
-            color: #ffc107;
-            margin-bottom: 0.5rem;
-        }
-        .priority-section p {
-            font-size: 0.75rem;
-            color: #888;
-            margin-bottom: 0.75rem;
-        }
-        .priority-btn {
-            display: inline-block;
-            padding: 0.6rem 1.2rem;
-            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
-            border: none;
-            border-radius: 6px;
-            color: #000;
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .priority-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.4);
-        }
-        .showcase-link {
-            display: block;
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: rgba(39, 202, 64, 0.1);
+            background: var(--green-glow);
             border: 1px solid rgba(39, 202, 64, 0.3);
-            border-radius: 8px;
-            text-decoration: none;
-            transition: border-color 0.2s, transform 0.2s;
-        }
-        .showcase-link:hover {
-            border-color: #27ca40;
-            transform: translateY(-2px);
-        }
-        .showcase-text {
-            color: #27ca40;
-            font-size: 0.9rem;
-        }
-        .showcase-count {
-            font-weight: bold;
-        }
-        .form-status {
-            margin-top: 0.75rem;
+            border-radius: 50px;
+            padding: 6px 18px;
+            margin-bottom: 2rem;
             font-size: 0.8rem;
-            text-align: center;
+            font-weight: 600;
+            color: var(--green);
         }
-        .form-status.success { color: #27ca40; }
-        .form-status.error { color: #ff5f56; }
-        
-        .log {
-            text-align: left;
-            font-size: 0.8rem;
-            color: #666;
-            line-height: 1.8;
-        }
-        .log span { color: #888; }
-        .log .time { color: #555; }
-        .log .action { color: #667eea; }
-        .log .success { color: #27ca40; }
-        
-        .footer {
-            margin-top: 1.5rem;
-            font-size: 0.75rem;
-            color: #444;
-        }
-        .footer a {
-            color: #667eea;
-            text-decoration: none;
-        }
-        
+
         .live-dot {
             width: 8px;
             height: 8px;
-            background: #27ca40;
+            background: var(--green);
             border-radius: 50%;
-            animation: livePulse 2s ease-in-out infinite;
+            animation: pulse 2s ease-in-out infinite;
         }
-        @keyframes livePulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(39, 202, 64, 0.7); }
-            50% { box-shadow: 0 0 0 10px rgba(39, 202, 64, 0); }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(39, 202, 64, 0.6); }
+            50% { box-shadow: 0 0 0 8px rgba(39, 202, 64, 0); }
         }
-        
-        .loading { color: #555; font-style: italic; }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 7vw, 5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            max-width: 800px;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.05rem, 2vw, 1.3rem);
+            color: var(--text-dim);
+            max-width: 550px;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.25s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ─── Stats Strip ─── */
+        .stats-strip {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 2px;
+        }
+
+        /* ─── How It Works ─── */
+        .how-section {
+            padding: 6rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .section-desc {
+            text-align: center;
+            color: var(--text-dim);
+            max-width: 550px;
+            margin: 0 auto 4rem;
+            font-size: 1.05rem;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: 15%;
+            right: 15%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--pink), var(--green));
+            opacity: 0.3;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step:nth-child(1) .step-icon {
+            background: linear-gradient(135deg, rgba(102,126,234,0.2), rgba(102,126,234,0.05));
+            border: 1px solid rgba(102,126,234,0.3);
+        }
+        .step:nth-child(2) .step-icon {
+            background: linear-gradient(135deg, rgba(255,107,157,0.2), rgba(255,107,157,0.05));
+            border: 1px solid rgba(255,107,157,0.3);
+        }
+        .step:nth-child(3) .step-icon {
+            background: linear-gradient(135deg, rgba(39,202,64,0.2), rgba(39,202,64,0.05));
+            border: 1px solid rgba(39,202,64,0.3);
+        }
+
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-faint);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .step h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* ─── Projects Showcase ─── */
+        .projects-section {
+            padding: 6rem 2rem;
+            background:
+                radial-gradient(ellipse at center, rgba(102, 126, 234, 0.06) 0%, transparent 50%);
+        }
+
+        .projects-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: all 0.25s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+
+        .project-card .card-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-status.done { color: var(--green); }
+        .card-status.open { color: var(--yellow); }
+
+        .card-status .dot-sm {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        .card-status.done .dot-sm { background: var(--green); }
+        .card-status.open .dot-sm { background: var(--yellow); }
+
+        .project-card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            flex: 1;
+        }
+
+        .project-card .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.75rem;
+            color: var(--text-faint);
+        }
+
+        .card-footer .try-link {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .see-all {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* ─── Request Form ─── */
+        .form-section {
+            padding: 6rem 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--accent-glow);
+        }
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-status {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        .form-status.success { color: var(--green); }
+        .form-status.error { color: var(--pink); }
+        .form-status a { color: var(--accent); }
+
+        .priority-card {
+            margin-top: 1.5rem;
+            padding: 1.25rem 1.5rem;
+            background: rgba(255, 193, 7, 0.06);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-info h4 {
+            font-size: 0.95rem;
+            color: var(--yellow);
+            margin-bottom: 2px;
+        }
+
+        .priority-info p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .priority-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.6rem 1.4rem;
+            background: linear-gradient(135deg, var(--yellow), #ff9800);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .priority-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3);
+        }
+
+        /* ─── About / Bot Card ─── */
+        .about-section {
+            padding: 4rem 2rem 6rem;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .bot-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .bot-avatar {
+            font-size: 4rem;
+            flex-shrink: 0;
+        }
+
+        .bot-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .bot-info .bot-role {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .bot-info p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* ─── Footer ─── */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.8rem;
+            color: var(--text-faint);
+        }
+
+        footer a {
+            color: var(--text-dim);
+            text-decoration: none;
+        }
+        footer a:hover { color: var(--accent); }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 768px) {
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .steps::before { display: none; }
+            .nav-links a:not(.gh-btn) { display: none; }
+            .bot-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .stats-strip { gap: 1.5rem; }
+            .priority-card { flex-direction: column; text-align: center; }
+        }
+
+        /* ─── Animations ─── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1, .hero-subtitle, .hero-cta, .live-badge, .stats-strip {
+            animation: fadeInUp 0.7s ease-out backwards;
+        }
+        .hero-subtitle { animation-delay: 0.1s; }
+        .hero-cta { animation-delay: 0.2s; }
+        .stats-strip { animation-delay: 0.3s; }
+
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="terminal">
-            <div class="header">
-                <div class="dot red"></div>
-                <div class="dot yellow"></div>
-                <div class="dot green"></div>
-            </div>
-            
-            <div class="bot-icon">🦾</div>
-            <h1>Built by Bot</h1>
-            <p class="tagline">This website is written, deployed & updated by an AI assistant</p>
-            
-            <div class="status">
-                <div class="status-line">
-                    <div class="live-dot"></div>
-                    <span>LIVE</span>
-                    <span class="blink">▋</span>
-                </div>
-            </div>
-            
-            <div class="build-info" id="buildInfo">
-                <div class="loading">Loading build info...</div>
-            </div>
-            
-            <div class="log">
-                <div><span class="time">[init]</span> <span class="action">Human says:</span> "Let's build a website"</div>
-                <div><span class="time">[+1m]</span> <span>Bot creates index.html</span></div>
-                <div><span class="time">[+3m]</span> <span class="action">Pushed to GitHub</span></div>
-                <div><span class="time">[+5m]</span> <span class="success">✓ Azure deploys automatically</span></div>
-                <div><span class="time">[now]</span> <span>You're looking at it</span> 👀</div>
-            </div>
-            
-            <div class="feature-section">
-                <h2>💡 Request a Feature</h2>
-                <p>Got an idea? Submit it and the bot might build it.</p>
-                
-                <form id="featureForm">
-                    <div class="form-group">
-                        <label for="name">Your name (optional)</label>
-                        <input type="text" id="name" name="name" placeholder="Anonymous">
-                    </div>
-                    <div class="form-group">
-                        <label for="title">Feature title *</label>
-                        <input type="text" id="title" name="title" placeholder="Add dark mode toggle" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea id="description" name="description" placeholder="Describe what you'd like to see..."></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Submit Request</button>
-                </form>
-                <div id="formStatus" class="form-status"></div>
-                
-                <div class="priority-section">
-                    <h3>⚡ Priority Request — €5</h3>
-                    <p>Jump the queue! Priority requests get built first.</p>
-                    <a href="https://ko-fi.com/c/941998dd84" target="_blank" class="priority-btn">Get Priority →</a>
-                </div>
-            </div>
-            
-            <a href="/projects/" class="showcase-link">
-                <span class="showcase-text">🚀 See what we've built → <span class="showcase-count" id="projectCount">...</span> features shipped</span>
+
+    <!-- Nav -->
+    <nav>
+        <a href="/" class="nav-brand">
+            <span>🦾</span> Built by Bot
+        </a>
+        <div class="nav-links">
+            <a href="#how">How it works</a>
+            <a href="#projects">Projects</a>
+            <a href="#request">Request</a>
+            <a href="https://github.com/mineflowprocess/built-by-bot" target="_blank" class="gh-btn">
+                ⭐ GitHub
             </a>
-            
-            <div class="footer">
-                <a href="/projects/">Projects</a> · 
-                <a href="https://github.com/mineflowprocess/built-by-bot">GitHub</a> · 
-                Powered by <a href="https://github.com/openclaw/openclaw">OpenClaw</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="live-badge">
+            <div class="live-dot"></div>
+            Bot is online & building
+        </div>
+
+        <h1>You ask.<br><span class="gradient">The bot builds.</span></h1>
+
+        <p class="hero-subtitle">
+            Submit a feature request. An AI assistant called Hans reviews it and builds it — live, in public. No humans writing code.
+        </p>
+
+        <div class="hero-cta">
+            <a href="#request" class="btn btn-primary">💡 Submit a Request</a>
+            <a href="#projects" class="btn btn-secondary">🚀 See What's Built</a>
+        </div>
+
+        <div class="stats-strip">
+            <div class="stat-item">
+                <div class="stat-number" id="statBuilt">—</div>
+                <div class="stat-label">Features Built</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="statOpen">—</div>
+                <div class="stat-label">In Queue</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Lines by Humans</div>
             </div>
         </div>
-    </div>
-    
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-section" id="how">
+        <div class="section-label">How it works</div>
+        <h2 class="section-title">From idea to live in minutes</h2>
+        <p class="section-desc">No sprints. No Jira tickets. No waiting weeks. Just tell the bot what to build.</p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-icon">💡</div>
+                <div class="step-num">Step 1</div>
+                <h3>You request</h3>
+                <p>Describe what you want — a game, a tool, a landing page, anything. Be creative.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">🤖</div>
+                <div class="step-num">Step 2</div>
+                <h3>Hans builds it</h3>
+                <p>The AI assistant reviews your request, writes the code, and pushes it to GitHub.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">🚀</div>
+                <div class="step-num">Step 3</div>
+                <h3>It goes live</h3>
+                <p>Azure auto-deploys. Your feature is live on this site for everyone to use.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects-section" id="projects">
+        <div class="projects-inner">
+            <div class="section-label">Shipped</div>
+            <h2 class="section-title">What's been built so far</h2>
+            <p class="section-desc">Every project started as a stranger's idea submitted through the form below.</p>
+
+            <div class="project-grid" id="projectGrid">
+                <!-- Filled by JS -->
+            </div>
+
+            <div class="see-all">
+                <a href="/projects/" class="btn btn-secondary">View all projects →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Request Form -->
+    <section class="form-section" id="request">
+        <div class="section-label">Your turn</div>
+        <h2 class="section-title">Request a feature</h2>
+        <p class="section-desc">What should Hans build next? Anything goes.</p>
+
+        <div class="form-card">
+            <form id="featureForm">
+                <div class="form-group">
+                    <label for="name">Your name (optional)</label>
+                    <input type="text" id="name" name="name" placeholder="Anonymous">
+                </div>
+                <div class="form-group">
+                    <label for="title">What should the bot build? *</label>
+                    <input type="text" id="title" name="title" placeholder="A password generator, a pixel art tool, a snake game..." required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Any details?</label>
+                    <textarea id="description" name="description" placeholder="Describe what you have in mind..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">🚀 Submit Request</button>
+            </form>
+            <div id="formStatus" class="form-status"></div>
+
+            <div class="priority-card">
+                <div class="priority-info">
+                    <h4>⚡ Priority Request — €5</h4>
+                    <p>Jump the queue. Your feature gets built first.</p>
+                </div>
+                <a href="https://ko-fi.com/c/941998dd84" target="_blank" class="priority-btn">Get Priority →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about-section">
+        <div class="bot-card">
+            <div class="bot-avatar">🦾</div>
+            <div class="bot-info">
+                <h3>Meet Hans</h3>
+                <div class="bot-role">AI Builder · Powered by OpenClaw</div>
+                <p>Hans is an AI assistant that writes, deploys, and maintains this entire website. Every line of code, every feature, every project you see here — built by bot, approved by human.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="/projects/">Projects</a>
+            <a href="https://github.com/mineflowprocess/built-by-bot" target="_blank">GitHub</a>
+            <a href="https://ko-fi.com/builtbybot" target="_blank">Ko-fi</a>
+            <a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a>
+        </div>
+        <p>Built entirely by an AI 🤖 · No humans were harmed in the making of this website</p>
+    </footer>
+
     <script>
-        async function loadBuildInfo() {
+        // ─── Load Stats ───
+        async function loadStats() {
             try {
-                const res = await fetch('/build-info.json');
-                if (!res.ok) throw new Error('No build info');
-                const info = await res.json();
-                
-                const formatDate = (iso) => {
-                    const d = new Date(iso);
-                    return d.toLocaleString('en-US', { 
-                        month: 'short', day: 'numeric', 
-                        hour: '2-digit', minute: '2-digit',
-                        hour12: false 
-                    });
-                };
-                
-                document.getElementById('buildInfo').innerHTML = `
-                    <div class="build-row">
-                        <span class="build-label">Commit</span>
-                        <span class="build-value highlight">${info.shortCommit}</span>
-                    </div>
-                    <div class="build-row">
-                        <span class="build-label">Message</span>
-                        <span class="build-value">${info.message}</span>
-                    </div>
-                    <div class="build-row">
-                        <span class="build-label">Author</span>
-                        <span class="build-value">${info.author}</span>
-                    </div>
-                    <div class="build-row">
-                        <span class="build-label">Deployed</span>
-                        <span class="build-value">${formatDate(info.buildTime)} UTC</span>
-                    </div>
-                `;
-            } catch (e) {
-                document.getElementById('buildInfo').innerHTML = `
-                    <div class="loading">Build info will appear after next deploy</div>
-                `;
+                const [closedRes, openRes] = await Promise.all([
+                    fetch('https://api.github.com/repos/mineflowprocess/built-by-bot/issues?labels=feature-request&state=closed&per_page=100'),
+                    fetch('https://api.github.com/repos/mineflowprocess/built-by-bot/issues?labels=feature-request&state=open&per_page=100')
+                ]);
+                const closed = await closedRes.json();
+                const open = await openRes.json();
+                document.getElementById('statBuilt').textContent = Array.isArray(closed) ? closed.length : '?';
+                document.getElementById('statOpen').textContent = Array.isArray(open) ? open.length : '?';
+            } catch(e) {
+                document.getElementById('statBuilt').textContent = '?';
+                document.getElementById('statOpen').textContent = '?';
             }
         }
-        
+
+        // ─── Load Projects ───
+        async function loadProjects() {
+            const grid = document.getElementById('projectGrid');
+            try {
+                const res = await fetch('https://api.github.com/repos/mineflowprocess/built-by-bot/issues?labels=feature-request&state=all&per_page=20&sort=created&direction=desc');
+                const issues = await res.json();
+                if (!Array.isArray(issues)) return;
+
+                const knownProjects = {
+                    'simple-calculator': '/projects/calculator/',
+                    'calculator': '/projects/calculator/',
+                    'typing-speed-test': '/projects/typing-test/',
+                    'typing-test': '/projects/typing-test/',
+                    'landing-page-for-beer': '/projects/dammies-beer/',
+                    'dammiesbeer': '/projects/dammies-beer/',
+                    'qr-code-generator': '/projects/qr-code/',
+                    'qr-code': '/projects/qr-code/',
+                    'build-a-qr-code-generator': '/projects/qr-code/',
+                    'sell-tables-and-chairs-landing-page': '/projects/furniture/',
+                    'sell-tables-and-chairs': '/projects/furniture/',
+                    'furniture': '/projects/furniture/',
+                    'add-a-meme': '/projects/meme/',
+                    'meme': '/projects/meme/',
+                    'meme-generator': '/projects/meme/',
+                    'improve-meme-project': '/projects/meme/',
+                    'build-me-a-robot-game': '/projects/robot-game/',
+                    'robot-game': '/projects/robot-game/',
+                    'robot-arena': '/projects/robot-game/'
+                };
+
+                function getUrl(title) {
+                    const slug = title.toLowerCase().replace(/\[feature request\]\s*/i, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                    return knownProjects[slug] || null;
+                }
+
+                function getDesc(body) {
+                    if (!body) return 'No description';
+                    const match = body.match(/\*\*Description:\*\*\s*\n?([\s\S]*?)(\n---|$)/);
+                    return match ? match[1].trim().substring(0, 120) : 'No description';
+                }
+
+                // Show up to 6 recent unique projects
+                const seen = new Set();
+                let count = 0;
+
+                issues.forEach(issue => {
+                    if (count >= 6) return;
+                    const title = issue.title.replace(/\[Feature Request\]\s*/i, '').trim();
+                    const url = getUrl(issue.title);
+                    const key = url || title;
+                    if (seen.has(key)) return;
+                    seen.add(key);
+                    count++;
+
+                    const isDone = issue.state === 'closed';
+                    const desc = getDesc(issue.body);
+                    const date = new Date(issue.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                    const card = document.createElement(url && isDone ? 'a' : 'div');
+                    card.className = 'project-card';
+                    if (url && isDone) card.href = url;
+
+                    card.innerHTML = `
+                        <div class="card-status ${isDone ? 'done' : 'open'}">
+                            <div class="dot-sm"></div>
+                            ${isDone ? 'Shipped' : 'In Progress'}
+                        </div>
+                        <h3>${title}</h3>
+                        <p>${desc}</p>
+                        <div class="card-footer">
+                            <span>#${issue.number} · ${date}</span>
+                            ${url && isDone ? '<span class="try-link">Try it →</span>' : ''}
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+            } catch(e) {
+                grid.innerHTML = '<p style="color: var(--text-dim); text-align: center; grid-column: 1/-1;">Could not load projects</p>';
+            }
+        }
+
+        // ─── Form Submission ───
         document.getElementById('featureForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const form = e.target;
             const btn = form.querySelector('button');
             const status = document.getElementById('formStatus');
-            
+
             btn.disabled = true;
-            btn.textContent = 'Submitting...';
+            btn.textContent = '⏳ Submitting...';
             status.textContent = '';
             status.className = 'form-status';
-            
+
             try {
                 const res = await fetch('/api/feature-request', {
                     method: 'POST',
@@ -414,39 +942,29 @@
                         description: form.description.value
                     })
                 });
-                
+
                 const data = await res.json();
-                
+
                 if (res.ok) {
-                    status.innerHTML = `✓ Submitted! <a href="${data.issueUrl}" target="_blank" style="color: #667eea;">Issue #${data.issueNumber}</a> created — follow along!`;
+                    status.innerHTML = `✅ Submitted! <a href="${data.issueUrl}" target="_blank">Issue #${data.issueNumber}</a> created — Hans will take a look!`;
                     status.className = 'form-status success';
                     form.reset();
+                    loadStats(); // Refresh stats
                 } else {
                     throw new Error(data.error || 'Submission failed');
                 }
             } catch (err) {
-                status.textContent = `✗ ${err.message}`;
+                status.textContent = `❌ ${err.message}`;
                 status.className = 'form-status error';
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Submit Request';
+                btn.textContent = '🚀 Submit Request';
             }
         });
-        
-        loadBuildInfo();
-        
-        // Load project count from GitHub
-        async function loadProjectCount() {
-            try {
-                const res = await fetch('https://api.github.com/repos/mineflowprocess/built-by-bot/issues?labels=feature-request&state=closed&per_page=100');
-                if (!res.ok) throw new Error('No projects');
-                const issues = await res.json();
-                document.getElementById('projectCount').textContent = issues.length;
-            } catch (e) {
-                document.getElementById('projectCount').textContent = '?';
-            }
-        }
-        loadProjectCount();
+
+        // ─── Init ───
+        loadStats();
+        loadProjects();
     </script>
 </body>
 </html>
