@@ -77,6 +77,13 @@ When building a new standalone project:
    ```
 3. Close the GitHub issue → shows as "Done" with "Try it →" button
 
+## Security Notes
+
+- The repo is public, so frontend and backend source code are readable.
+- Secrets live in Azure environment variables, not in the frontend or git.
+- Public APIs must be validated server-side; frontend checks are UX only.
+- See [`SECURITY.md`](./SECURITY.md) for trust boundaries and token guidance.
+
 ## Tech Stack
 
 - **Frontend:** Vanilla HTML/CSS/JS
