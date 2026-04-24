@@ -97,6 +97,7 @@
                 inset 0 0 50px rgba(0,0,0,0.4),
                 0 20px 60px rgba(0,0,0,0.35);
             overflow: hidden;
+            margin: 0 auto;
         }
         .board::before, .board::after {
             content: '';
@@ -299,12 +300,119 @@
             text-align: center;
         }
         @media (max-width: 900px) {
-            .layout { grid-template-columns: 1fr; }
+            .layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .sidebar {
+                order: 1;
+            }
+            .layout > .panel:first-child {
+                order: 2;
+            }
+            .board {
+                width: min(100%, 420px);
+            }
         }
         @media (max-width: 560px) {
-            body { padding: 1rem; }
-            .panel { padding: 1rem; }
-            .actions, .hud { grid-template-columns: 1fr; }
+            body {
+                padding: 0.75rem;
+            }
+            .hero {
+                margin-bottom: 1rem;
+            }
+            .subtitle {
+                font-size: 0.84rem;
+                line-height: 1.45;
+            }
+            .panel {
+                padding: 0.9rem;
+                border-radius: 14px;
+            }
+            .window-dots {
+                margin-bottom: 0.75rem;
+            }
+            .hud {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+                margin-bottom: 0.75rem;
+            }
+            .stat {
+                padding: 0.75rem;
+            }
+            .stat-label {
+                font-size: 0.62rem;
+            }
+            .stat-value {
+                font-size: 1.15rem;
+            }
+            .meters {
+                gap: 0.7rem;
+                margin-bottom: 0.75rem;
+            }
+            .actions {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+                position: sticky;
+                bottom: 0.5rem;
+                z-index: 10;
+                padding: 0.55rem;
+                border-radius: 14px;
+                background: rgba(15, 15, 35, 0.92);
+                backdrop-filter: blur(10px);
+            }
+            button {
+                padding: 0.9rem 0.75rem;
+                font-size: 0.82rem;
+            }
+            .message {
+                margin-top: 0.75rem;
+                min-height: 0;
+                padding: 0.75rem 0.85rem;
+                font-size: 0.8rem;
+            }
+            .board {
+                width: min(100%, 280px);
+                border-width: 8px;
+                box-shadow: inset 0 0 30px rgba(0,0,0,0.35), 0 14px 36px rgba(0,0,0,0.3);
+            }
+            .aim-dot {
+                width: 12px;
+                height: 12px;
+            }
+            .dart {
+                width: 14px;
+                height: 14px;
+            }
+            .dart::after {
+                width: 14px;
+            }
+            .legend {
+                font-size: 0.74rem;
+                gap: 0.4rem;
+            }
+            .history {
+                gap: 0.45rem;
+            }
+            .history-item {
+                font-size: 0.76rem;
+                padding: 0.6rem 0.7rem;
+            }
+        }
+        @media (max-width: 380px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            .board {
+                width: min(100%, 240px);
+            }
+            .hud,
+            .actions {
+                grid-template-columns: 1fr;
+            }
+            .actions {
+                bottom: 0.35rem;
+            }
         }
     </style>
 </head>
