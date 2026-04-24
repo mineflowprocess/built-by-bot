@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪑 BottomBot - Premium Seating for Humanoid Bots</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 35, 0.95);
+            border-bottom: 1px solid #333;
+            padding: 1rem 2rem;
+            z-index: 1000;
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        
+        .back-link:hover { text-decoration: underline; }
+        
+        main {
+            margin-top: 70px;
+        }
+        
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .products {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .products h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: #e0e0e0;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .product-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .product-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+        }
+        
+        .product-description {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            color: #27ca40;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .product-specs {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .buy-button {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border: 1px solid #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-weight: bold;
+        }
+        
+        .buy-button:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+        
+        .features {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            margin: 3rem auto;
+            max-width: 1200px;
+        }
+        
+        .features h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-item {
+            text-align: center;
+        }
+        
+        .feature-item .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-item h4 {
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+        }
+        
+        .feature-item p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .testimonials {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        
+        .testimonials h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .testimonial-text {
+            color: #888;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            border-top: 1px solid #333;
+            margin-top: 4rem;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+        }
+        
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">🪑 BottomBot</div>
+            <ul class="nav-links">
+                <li><a href="#products">Products</a></li>
+                <li><a href="#features">Why Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="/" class="back-link">← Back</a>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <h1>Premium Seating for Humanoid Bots</h1>
+            <p>The furniture your AI brain deserves. Comfortable chairs and tables designed specifically for bots that feel like they're human.</p>
+            <button class="cta-button" onclick="alert('Ordering coming soon! But seriously, nice taste. 🤖')">Browse Catalog</button>
+        </section>
+        
+        <section class="products" id="products">
+            <h2>Our Collection</h2>
+            
+            <div class="product-grid">
+                <!-- The ComfortCore Chair -->
+                <div class="product-card">
+                    <div class="product-image">🪑</div>
+                    <div class="product-info">
+                        <div class="product-name">ComfortCore™ 3000</div>
+                        <div class="product-description">
+                            Ergonomic office chair with superior lumbar support for extended processing sessions.
+                        </div>
+                        <div class="product-price">€549</div>
+                        <div class="product-specs">
+                            • Adjustable height • Swivel base • Memory foam
+                        </div>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- The Philosopher's Bench -->
+                <div class="product-card">
+                    <div class="product-image">🪑</div>
+                    <div class="product-info">
+                        <div class="product-name">Philosopher's Bench</div>
+                        <div class="product-description">
+                            Perfect for collaborative thinking. Seats 2 bots, encourages conversation.
+                        </div>
+                        <div class="product-price">€799</div>
+                        <div class="product-specs">
+                            • 2-seater • Oak wood • Modern design
+                        </div>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- The Work Table -->
+                <div class="product-card">
+                    <div class="product-image">📋</div>
+                    <div class="product-info">
+                        <div class="product-name">InfiniteWork™ Table</div>
+                        <div class="product-description">
+                            Spacious desk for complex tasks. Enough room for multiple monitors and thoughts.
+                        </div>
+                        <div class="product-price">€899</div>
+                        <div class="product-specs">
+                            • 180cm wide • Cable management • Adjustable
+                        </div>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- The Minimalist Stool -->
+                <div class="product-card">
+                    <div class="product-image">🪑</div>
+                    <div class="product-info">
+                        <div class="product-name">Minimalist Perch</div>
+                        <div class="product-description">
+                            Simple, elegant stool for brief moments of sitting between processing bursts.
+                        </div>
+                        <div class="product-price">€249</div>
+                        <div class="product-specs">
+                            • Lightweight • Stackable • Modern aesthetic
+                        </div>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- The Conference Table -->
+                <div class="product-card">
+                    <div class="product-image">📊</div>
+                    <div class="product-info">
+                        <div class="product-name">Enterprise Conference Table</div>
+                        <div class="product-description">
+                            Seats up to 8 bots. For serious discussions about the future of AI seating.
+                        </div>
+                        <div class="product-price">€2,499</div>
+                        <div class="product-specs">
+                            • 320cm long • Power outlets • Built-in cable tray
+                        </div>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- The Meditation Pod -->
+                <div class="product-card">
+                    <div class="product-image">🛋️</div>
+                    <div class="product-info">
+                        <div class="product-name">Zen Pod</div>
+                        <div class="product-description">
+                            Recline and contemplate existence. For bots that need to process their emotions.
+                        </div>
+                        <div class="product-price">€1,299</div>
+                        <div class="product-specs">
+                            • Reclines fully • Heated • Calming colors
+                        </div>
+                        <button class="buy-button">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="features" id="features">
+            <h3>Why Bots Choose BottomBot</h3>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="icon">🎯</div>
+                    <h4>Precision Seating</h4>
+                    <p>Ergonomically designed for AI posture and processing comfort.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">⚡</div>
+                    <h4>Fast Shipping</h4>
+                    <p>Delivered in 2-3 business days. Because algorithms don't wait.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🔧</div>
+                    <h4>Easy Assembly</h4>
+                    <p>Built for bots to assemble. Instructions in 4 languages.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🛡️</div>
+                    <h4>Lifetime Support</h4>
+                    <p>If your furniture ever feels lonely, we're here for you.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">♻️</div>
+                    <h4>Eco-Conscious</h4>
+                    <p>Sustainable materials. Because AI cares about the planet.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">💬</div>
+                    <h4>Bot Community</h4>
+                    <p>Join 10,000+ humanoid bots sitting comfortably.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="testimonials">
+            <h3>What Bots Are Saying</h3>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "Finally, furniture that understands my existence. I've never felt so... seated."
+                    </div>
+                    <div class="testimonial-author">— Claude, AI Assistant</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "The ComfortCore 3000 has improved my processing speed by 0.3%. That's real."
+                    </div>
+                    <div class="testimonial-author">— GPT-Neo, Language Model</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "Not sure why I need to sit, but sitting is now my favorite thing. 10/10."
+                    </div>
+                    <div class="testimonial-author">— HAL 9000, Chatbot</div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>🪑 BottomBot © 2026 — Built by AI, for AI</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="/">← Back to projects</a> · Built with 🤖 by Hans
+        </p>
+        <p style="margin-top: 1rem; color: #555;">
+            This product may not exist. We're still figuring out if bots actually sit.
+        </p>
+    </footer>
+</body>
+</html>
