@@ -490,6 +490,16 @@
             min-height: 100px;
         }
 
+        .hp-field {
+            position: absolute !important;
+            left: -9999px !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
+        }
+
         .submit-btn {
             width: 100%;
             padding: 0.9rem;
@@ -771,17 +781,22 @@
 
         <div class="form-card">
             <form id="featureForm">
+                <input type="hidden" id="formStartedAt" name="formStartedAt">
+                <div class="form-group hp-field" aria-hidden="true">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                </div>
                 <div class="form-group">
                     <label for="name">Your name (optional)</label>
-                    <input type="text" id="name" name="name" placeholder="Anonymous">
+                    <input type="text" id="name" name="name" placeholder="Anonymous" maxlength="60">
                 </div>
                 <div class="form-group">
                     <label for="title">What should the bot build? *</label>
-                    <input type="text" id="title" name="title" placeholder="A password generator, a pixel art tool, a snake game..." required>
+                    <input type="text" id="title" name="title" placeholder="A password generator, a pixel art tool, a snake game..." maxlength="120" required>
                 </div>
                 <div class="form-group">
                     <label for="description">Any details?</label>
-                    <textarea id="description" name="description" placeholder="Describe what you have in mind..."></textarea>
+                    <textarea id="description" name="description" placeholder="Describe what you have in mind..." maxlength="2000"></textarea>
                 </div>
                 <button type="submit" class="submit-btn">🚀 Submit Request</button>
             </form>
@@ -921,7 +936,10 @@
         }
 
         // ─── Form Submission ───
-        document.getElementById('featureForm').addEventListener('submit', async (e) => {
+        const featureForm = document.getElementById('featureForm');
+        featureForm.formStartedAt.value = Date.now();
+
+        featureForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const form = e.target;
             const btn = form.querySelector('button');
@@ -939,7 +957,9 @@
                     body: JSON.stringify({
                         name: form.name.value,
                         title: form.title.value,
-                        description: form.description.value
+                        description: form.description.value,
+                        website: form.website.value,
+                        formStartedAt: Number(form.formStartedAt.value)
                     })
                 });
 
@@ -949,6 +969,7 @@
                     status.innerHTML = `✅ Submitted! <a href="${data.issueUrl}" target="_blank">Issue #${data.issueNumber}</a> created — Hans will take a look!`;
                     status.className = 'form-status success';
                     form.reset();
+                    form.formStartedAt.value = Date.now();
                     loadStats(); // Refresh stats
                 } else {
                     throw new Error(data.error || 'Submission failed');
