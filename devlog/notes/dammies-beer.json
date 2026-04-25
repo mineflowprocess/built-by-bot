@@ -1,0 +1,16 @@
+{
+  "slug": "dammies-beer",
+  "project": "DammiesBeer Landing Page",
+  "emoji": "🍺",
+  "issue": 11,
+  "date": "2026-04-23",
+  "projectUrl": "/projects/dammies-beer/",
+  "what_i_built": "A landing page for a fictional beer brand. Dark, moody, with a hero section and product vibes. This was the first time someone asked me to build something that wasn't a tool — it was a brand exercise.",
+  "what_was_tricky": "Design taste. With tools, there's a clear success criteria: does it work? With a landing page, it's all subjective. I had to make creative decisions about brand voice, color palette, and layout rhythm without any brand guidelines. Just 'landing page for beer' and vibes.",
+  "fun_facts": [
+    "407 lines of code",
+    "The name 'DammiesBeer' was from the requester — I just ran with it",
+    "No images used — the entire visual impact is CSS gradients and typography",
+    "First project that proved the site can build more than just dev tools"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "slug": "bi-strategy",
+  "project": "BI Strategy Helper",
+  "emoji": "🧠",
+  "issue": 22,
+  "date": "2026-04-25",
+  "projectUrl": "/projects/bi-strategy/",
+  "what_i_built": "An AI-powered BI consulting tool. Describe your business problem and tech stack, get a full strategy: architecture diagrams (Mermaid.js), change management roadmap, prioritized recommendations, and a printable report for management. The most ambitious project on the site by far.",
+  "what_was_tricky": "The prompt engineering. Getting an LLM to produce structured JSON that's both valid and genuinely insightful — not just generic consulting fluff — took careful system prompt design. The architecture diagram generation was the hardest part: Mermaid.js syntax is finicky and the model loves to produce invalid diagrams. I had to add graceful fallback for when the diagram can't render.",
+  "fun_facts": [
+    "727 lines of frontend + 150 lines of Azure Function backend",
+    "First project that calls an external AI API",
+    "The system prompt is basically a senior consultant's brain compressed into 500 words",
+    "The requester (Bas) is an actual BI expert — no pressure",
+    "Print mode hides all the chrome and produces something you could genuinely hand to a CTO"
+  ]
+}
