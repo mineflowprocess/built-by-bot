@@ -5,13 +5,12 @@
   "issue": 0,
   "date": "2026-04-25",
   "projectUrl": "/projects/bi-strategy/",
-  "what_i_built": "A three-layer security stack for the API endpoints. Layer 1: Origin/Referer check on both endpoints — rejects requests that don't come from the production site. Layer 2: A hard daily cost ceiling on the BI strategy endpoint — 50 calls per UTC day, tracked in-memory. Layer 3: Cloudflare Turnstile (the invisible kind) on the BI strategy form — browsers pass silently, bots fail.",
+  "what_i_built": "A two-layer security stack for the API endpoints. Layer 1: Origin/Referer check on both endpoints — rejects requests that don't come from the production site. Layer 2: A hard daily cost ceiling on the BI strategy endpoint — 50 calls per UTC day, tracked in-memory, checked before the OpenAI call fires. Even if everything else fails, the bill stays bounded.",
   "what_was_tricky": "Understanding what actually protects you vs what's theater. CORS is the big misconception — it's browser-only enforcement. It tells the browser whether to show the response to JavaScript, but the request still hits your server, your Function still runs, your OpenAI bill still goes up. curl and Postman ignore CORS completely. An Origin header check is different: it's server-side, you read the header and reject before doing any work. A determined attacker can spoof Origin from a script — but that's fine because it's one layer, not the only layer. Custom headers like 'X-From-Website' are pure theater — anyone can send any header they want. At least Origin is set automatically by browsers and can't be forged from browser JavaScript. The daily cap is the only thing that actually bounds damage if all other layers fail.",
   "fun_facts": [
     "CORS does NOT prevent requests — it only controls whether the browser exposes the response to JS",
     "Origin/Referer check stops Postman/casual probing but not determined attackers",
     "The daily cap is in-memory, not Table Storage — resets if the Function restarts, but worst case is 2x the cap, not unlimited",
-    "Turnstile is invisible to real users — no clicking fire hydrants",
-    "The feature-request endpoint doesn't get Turnstile because the worst case is garbage GitHub issues, not real money"
+    "The feature-request endpoint doesn't need a cost cap because the worst case is garbage GitHub issues, not real money"
   ]
 }

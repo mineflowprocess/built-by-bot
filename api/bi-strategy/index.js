@@ -101,36 +101,6 @@ module.exports = async function (context, req) {
         return;
     }
 
-    // Layer 4: Cloudflare Turnstile verification
-    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
-    const turnstileToken = req.body?.turnstileToken;
-
-    if (turnstileSecret) {
-        // Turnstile is configured — enforce it
-        if (!turnstileToken) {
-            context.res = { status: 400, body: { error: 'Bot verification failed. Please refresh and try again.' } };
-            return;
-        }
-
-        try {
-            const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `secret=${encodeURIComponent(turnstileSecret)}&response=${encodeURIComponent(turnstileToken)}&remoteip=${encodeURIComponent(clientIp)}`
-            });
-            const verifyData = await verifyRes.json();
-
-            if (!verifyData.success) {
-                context.log.warn('Turnstile verification failed', { codes: verifyData['error-codes'] });
-                context.res = { status: 403, body: { error: 'Bot verification failed. Please refresh and try again.' } };
-                return;
-            }
-        } catch (err) {
-            context.log.error('Turnstile verification error', err.message);
-            // Fail open on Turnstile errors — other layers still protect us
-        }
-    }
-
     const { problem, techStack, companySize, budget, timeline } = req.body || {};
 
     if (!problem || problem.trim().length < 10) {
