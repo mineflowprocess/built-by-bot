@@ -1,3 +1,5 @@
+const { checkOrigin } = require('../shared/origin-check');
+
 const rateLimit = new Map();
 
 const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
@@ -36,6 +38,13 @@ module.exports = async function (context, req) {
             status: 405,
             body: { error: 'Method not allowed' }
         };
+        return;
+    }
+
+    // Origin check
+    const originBlock = checkOrigin(req, context);
+    if (originBlock) {
+        context.res = originBlock;
         return;
     }
 

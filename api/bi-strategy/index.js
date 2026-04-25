@@ -1,3 +1,6 @@
+const { checkOrigin } = require('../shared/origin-check');
+const { checkDailyCap, recordUsage } = require('../shared/daily-cap');
+
 const rateLimit = new Map();
 const WINDOW_MS = 15 * 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 3;
@@ -68,6 +71,14 @@ module.exports = async function (context, req) {
         return;
     }
 
+    // Layer 1: Origin check
+    const originBlock = checkOrigin(req, context);
+    if (originBlock) {
+        context.res = originBlock;
+        return;
+    }
+
+    // Layer 2: Per-IP rate limit (instance-local)
     const clientIp = getClientIp(req);
     const now = Date.now();
     cleanupRateLimit(now);
@@ -81,6 +92,13 @@ module.exports = async function (context, req) {
             context.res = { status: 429, body: { error: 'Rate limit exceeded. Please wait 15 minutes.' } };
             return;
         }
+    }
+
+    // Layer 3: Daily cost ceiling (check BEFORE expensive work)
+    const capBlock = checkDailyCap(context);
+    if (capBlock) {
+        context.res = capBlock;
+        return;
     }
 
     const { problem, techStack, companySize, budget, timeline } = req.body || {};
@@ -155,6 +173,9 @@ ${(timeline || 'Not specified').slice(0, 200)}`;
             context.res = { status: 502, body: { error: 'AI returned invalid format. Please try again.' } };
             return;
         }
+
+        // Success — record usage for daily cap
+        recordUsage();
 
         context.res = {
             status: 200,
