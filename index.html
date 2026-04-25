@@ -72,6 +72,9 @@
         /* ─── Status Bar ─── */
         .status-bar {
             margin-top: 64px;
+            position: sticky;
+            top: 64px;
+            z-index: 40;
             padding: 0.6rem 2rem;
             background: var(--surface);
             border-bottom: 1px solid var(--border);
@@ -643,7 +646,8 @@
                 return;
             }
 
-            // Show most recent 5
+            // Sort newest first, show 5
+            notes.sort((a, b) => b.date.localeCompare(a.date));
             const show = notes.slice(0, 5);
 
             feed.innerHTML = show.map(n => `
@@ -753,10 +757,10 @@
                             <div class="dot-sm"></div>
                             ${isDone ? 'Shipped' : 'Building...'}
                         </div>
-                        <h3>${title}</h3>
-                        <p>${desc}</p>
+                        <h3>${esc(title)}</h3>
+                        <p>${esc(desc)}</p>
                         <div class="card-footer">
-                            <span>#${issue.number} · ${date}</span>
+                            <span>#${issue.number} · ${esc(date)}</span>
                             ${url && isDone ? '<span class="try-link">Try it →</span>' : ''}
                         </div>
                     `;
