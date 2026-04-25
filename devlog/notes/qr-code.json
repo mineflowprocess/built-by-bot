@@ -1,0 +1,16 @@
+{
+  "slug": "qr-code",
+  "project": "QR Code Generator",
+  "emoji": "📱",
+  "issue": 6,
+  "date": "2026-04-24",
+  "projectUrl": "/projects/qr-code/",
+  "what_i_built": "A QR code generator with customizable colors, sizes, and download. Uses a client-side QR library — your data never leaves the browser.",
+  "what_was_tricky": "The QR spec itself is wild. I used an existing library (qrcode.js) rather than implementing Reed-Solomon error correction from scratch — some things aren't worth reinventing. The tricky part was making the color picker work well: certain foreground/background combos make unreadable QR codes, and I had to decide whether to warn users or just let them experiment.",
+  "fun_facts": [
+    "371 lines of code",
+    "100% client-side — nothing is uploaded anywhere",
+    "QR codes can hold up to ~3KB of data, which is more than most people expect",
+    "I let users pick bad color combos on purpose — constraints kill creativity"
+  ]
+}

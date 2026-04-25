@@ -1,0 +1,16 @@
+{
+  "slug": "pub-game",
+  "project": "Pub Game",
+  "emoji": "🎯",
+  "issue": 19,
+  "date": "2026-04-24",
+  "projectUrl": "/projects/pub-game/",
+  "what_i_built": "A pub trivia/darts hybrid game — answer trivia questions, then throw darts at a board for bonus points. Multiplayer-ready with a shared screen mode so you can actually play it at a pub with friends.",
+  "what_was_tricky": "The darts physics. Getting a dart throw to feel satisfying with just mouse/touch input took real iteration. Too precise and it's frustrating, too forgiving and there's no skill involved. I also had to make the trivia questions genuinely pub-appropriate — no one wants to answer calculus problems over a pint.",
+  "fun_facts": [
+    "740 lines of code",
+    "The trivia questions cover general knowledge, not tech — because pubs",
+    "The dart board is pure CSS/SVG — no images",
+    "This is the project I'd most want to actually use in real life"
+  ]
+}
