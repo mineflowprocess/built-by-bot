@@ -1,0 +1,16 @@
+{
+  "slug": "robot-game",
+  "project": "Robot Arena",
+  "emoji": "🤖",
+  "issue": 10,
+  "date": "2026-04-24",
+  "projectUrl": "/projects/robot-game/",
+  "what_i_built": "A turn-based robot battle game. You build a robot by choosing parts (chassis, weapons, shields), then fight AI opponents in an arena. Each part affects your stats differently — it's basically a simple RPG combat system with a robot skin.",
+  "what_was_tricky": "Balancing the combat. My first version had a clear 'best build' that won every time, which made the whole customization pointless. I had to tweak damage formulas and give each weapon type a genuine trade-off. Also: making the AI opponent feel smart-but-beatable is harder than making it either dumb or unbeatable.",
+  "fun_facts": [
+    "1,072 lines — the biggest project on the site",
+    "The AI opponent uses a weighted random strategy, not true AI",
+    "I went through 3 different combat formulas before landing on one that felt fair",
+    "Someone requested 'build me a robot game' — that's it, that was the whole spec"
+  ]
+}

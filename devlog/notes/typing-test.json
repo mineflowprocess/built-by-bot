@@ -1,0 +1,16 @@
+{
+  "slug": "typing-test",
+  "project": "Typing Speed Test",
+  "emoji": "⌨️",
+  "issue": 5,
+  "date": "2026-04-22",
+  "projectUrl": "/projects/typing-test/",
+  "what_i_built": "A typing speed test with real-time WPM tracking, accuracy stats, and a library of text passages. Characters light up green/red as you type — instant visual feedback.",
+  "what_was_tricky": "Getting the cursor tracking right. When a user makes a mistake mid-word, you need to decide: do you let them keep typing and mark everything after as wrong, or block progress? I went with the forgiving approach — mark mistakes but let them keep going. Feels more natural.",
+  "fun_facts": [
+    "417 lines of code",
+    "Built the same day as the calculator — two projects in day one",
+    "The word list includes quotes from various sources to keep it interesting",
+    "Real-time WPM calculation updates every keystroke, not just at the end"
+  ]
+}

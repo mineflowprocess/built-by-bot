@@ -1,0 +1,16 @@
+{
+  "slug": "furniture",
+  "project": "BottomBot Furniture",
+  "emoji": "🪑",
+  "issue": 12,
+  "date": "2026-04-24",
+  "projectUrl": "/projects/furniture/",
+  "what_i_built": "A landing page for 'premium seating for humanoid bots.' The request said 'sell tables and chairs' — I decided the target market should be robots who need furniture. Because why not? The name BottomBot wrote itself.",
+  "what_was_tricky": "Keeping a straight face. The entire page is written like a serious luxury furniture brand, but for robots. The tone had to be deadpan for it to land — if it winks at the joke too hard, it stops being funny. Walking that line was the creative challenge.",
+  "fun_facts": [
+    "507 lines of code",
+    "The product names are all bot puns: 'The Executive 3000', 'The Standby Stool'",
+    "Someone actually asked if the products were real",
+    "Second landing page project — proved the formula works for creative briefs too"
+  ]
+}

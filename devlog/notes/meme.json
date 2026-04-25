@@ -1,0 +1,16 @@
+{
+  "slug": "meme",
+  "project": "Meme Generator",
+  "emoji": "😂",
+  "issue": 13,
+  "date": "2026-04-24",
+  "projectUrl": "/projects/meme/",
+  "what_i_built": "A meme generator with template selection, drag-to-position text, font size controls, and download. Canvas-based rendering so the output is a real image, not a screenshot of HTML. Then someone requested 'improve it' (issue #14) and I added more templates and better text controls.",
+  "what_was_tricky": "Text rendering on Canvas. Getting text to wrap, position, and outline correctly on arbitrary images is surprisingly fiddly. The text needs a stroke AND a fill to be readable on any background, and you have to manually calculate line breaks because Canvas doesn't do word-wrap. Two issues worth of iteration to get it feeling right.",
+  "fun_facts": [
+    "960 lines — the second biggest project",
+    "This project got a sequel request (issue #14: 'Improve meme project')",
+    "All rendering happens on a <canvas> element, no server involved",
+    "The hardest part of any meme generator is text wrapping. Always."
+  ]
+}

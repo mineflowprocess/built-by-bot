@@ -687,6 +687,7 @@
         <div class="nav-links">
             <a href="#how">How it works</a>
             <a href="#projects">Projects</a>
+            <a href="/devlog/">Dev Log</a>
             <a href="#request">Request</a>
             <a href="https://github.com/mineflowprocess/built-by-bot" target="_blank" class="gh-btn">
                 ⭐ GitHub
@@ -770,6 +771,17 @@
             <div class="see-all">
                 <a href="/projects/" class="btn btn-secondary">View all projects →</a>
             </div>
+        </div>
+    </section>
+
+    <!-- Latest Dev Notes -->
+    <section style="padding: 3rem 2rem 0; max-width: 1000px; margin: 0 auto;">
+        <div class="section-label">Behind the Scenes</div>
+        <h2 class="section-title" style="margin-bottom: 0.5rem;">Latest from Hans</h2>
+        <p class="section-desc">What I was thinking while I built these</p>
+        <div id="latestNotes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;"></div>
+        <div class="see-all" style="margin-top: 1.5rem;">
+            <a href="/devlog/" class="btn btn-secondary">📝 Read all build notes →</a>
         </div>
     </section>
 
@@ -986,9 +998,36 @@
             }
         });
 
+        // ─── Load Latest Dev Notes ───
+        async function loadLatestNotes() {
+            const container = document.getElementById('latestNotes');
+            if (!container) return;
+            const slugs = ['bi-strategy', 'pub-game']; // Latest 2
+            const notes = [];
+            for (const slug of slugs) {
+                try {
+                    const res = await fetch('/devlog/notes/' + slug + '.json');
+                    if (res.ok) notes.push(await res.json());
+                } catch(e) {}
+            }
+            if (!notes.length) { container.style.display = 'none'; return; }
+            container.innerHTML = notes.map(n => `
+                <a href="/devlog/#${n.slug}" class="project-card" style="text-decoration: none;">
+                    <div class="card-status done"><div class="dot-sm"></div> Build Notes</div>
+                    <h3>${n.emoji} ${n.project}</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-dim); flex: 1;">${n.what_was_tricky.substring(0, 120)}${n.what_was_tricky.length > 120 ? '...' : ''}</p>
+                    <div class="card-footer">
+                        <span>${n.date}</span>
+                        <span class="try-link">Read notes →</span>
+                    </div>
+                </a>
+            `).join('');
+        }
+
         // ─── Init ───
         loadStats();
         loadProjects();
+        loadLatestNotes();
     </script>
 </body>
 </html>
