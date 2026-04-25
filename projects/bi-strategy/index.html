@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 BI Strategy Helper — Built by Bot</title>
+    <meta name="description" content="Describe your business problem and tech stack. Get architecture diagrams, change management plans, and strategic recommendations — powered by AI.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #08081a;
+            --surface: #0f0f2a;
+            --surface-light: #161640;
+            --border: #252560;
+            --accent: #667eea;
+            --accent-glow: rgba(102, 126, 234, 0.25);
+            --green: #27ca40;
+            --green-glow: rgba(39, 202, 64, 0.2);
+            --pink: #ff6b9d;
+            --yellow: #ffc107;
+            --orange: #ff8c42;
+            --text: #e8e8f0;
+            --text-dim: #7777aa;
+            --text-faint: #444466;
+            --radius: 16px;
+        }
+        body {
+            background: var(--bg);
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        html { scroll-behavior: smooth; }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(8, 8, 26, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(37, 37, 96, 0.5);
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: var(--text);
+            font-weight: 800; font-size: 1.1rem;
+        }
+        .nav-brand span { font-size: 1.4rem; }
+        .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+        .nav-links a {
+            color: var(--text-dim); text-decoration: none;
+            font-size: 0.85rem; font-weight: 500; transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 2rem 4rem; text-align: center;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(102, 126, 234, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(255, 107, 157, 0.08) 0%, transparent 50%);
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+            line-height: 1.1; margin-bottom: 1rem; letter-spacing: -1px;
+        }
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p { color: var(--text-dim); max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
+
+        /* Form */
+        .form-section { max-width: 700px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+        .form-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 2.5rem;
+        }
+        .form-step { display: none; }
+        .form-step.active { display: block; }
+        .step-indicator {
+            display: flex; justify-content: center; gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .step-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--border); transition: all 0.3s;
+        }
+        .step-dot.active { background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+        .step-dot.done { background: var(--green); }
+        .step-title {
+            font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;
+        }
+        .step-desc { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label {
+            display: block; font-size: 0.8rem; font-weight: 600;
+            color: var(--text-dim); margin-bottom: 0.4rem;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 0.8rem 1rem;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text);
+            font-family: inherit; font-size: 0.9rem; transition: all 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-group select { cursor: pointer; }
+        .form-group select option { background: var(--surface); color: var(--text); }
+
+        /* Chip selector for tech stack */
+        .chip-grid {
+            display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;
+        }
+        .chip {
+            padding: 0.4rem 1rem; border-radius: 50px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            font-size: 0.8rem; cursor: pointer; transition: all 0.2s;
+            user-select: none;
+        }
+        .chip:hover { border-color: var(--accent); }
+        .chip.selected {
+            background: var(--accent-glow); border-color: var(--accent); color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn-row { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 0.8rem 1.8rem; border-radius: 12px;
+            font-size: 0.95rem; font-weight: 600; font-family: inherit;
+            text-decoration: none; cursor: pointer; border: none; transition: all 0.25s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white; box-shadow: 0 4px 20px var(--accent-glow);
+            flex: 1;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(102,126,234,0.4); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-secondary {
+            background: rgba(255,255,255,0.06); color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+
+        /* Loading */
+        .loading-overlay {
+            display: none; text-align: center; padding: 4rem 2rem;
+        }
+        .loading-overlay.active { display: block; }
+        .spinner {
+            width: 60px; height: 60px; margin: 0 auto 2rem;
+            border: 3px solid var(--border); border-top-color: var(--accent);
+            border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { color: var(--text-dim); font-size: 1rem; }
+        .loading-detail { color: var(--text-faint); font-size: 0.85rem; margin-top: 0.5rem; }
+
+        /* Results */
+        .results-section { display: none; max-width: 900px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+        .results-section.active { display: block; }
+
+        .result-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 2rem; margin-bottom: 1.5rem;
+        }
+        .result-card h2 {
+            font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .result-card h3 {
+            font-size: 0.95rem; font-weight: 600; margin: 1rem 0 0.5rem;
+            color: var(--accent);
+        }
+        .exec-summary {
+            font-size: 1.05rem; line-height: 1.7; color: var(--text);
+            border-left: 3px solid var(--accent); padding-left: 1.25rem;
+        }
+
+        /* Assessment */
+        .assessment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .assessment-box { padding: 1rem; border-radius: 12px; }
+        .assessment-box.strengths { background: rgba(39,202,64,0.08); border: 1px solid rgba(39,202,64,0.2); }
+        .assessment-box.gaps { background: rgba(255,193,7,0.08); border: 1px solid rgba(255,193,7,0.2); }
+        .assessment-box.risks { background: rgba(255,107,157,0.08); border: 1px solid rgba(255,107,157,0.2); }
+        .assessment-box h4 {
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 0.75rem;
+        }
+        .assessment-box.strengths h4 { color: var(--green); }
+        .assessment-box.gaps h4 { color: var(--yellow); }
+        .assessment-box.risks h4 { color: var(--pink); }
+        .assessment-box ul { list-style: none; font-size: 0.85rem; }
+        .assessment-box li { padding: 0.25rem 0; color: var(--text-dim); }
+        .assessment-box li::before { margin-right: 0.5rem; }
+        .assessment-box.strengths li::before { content: '✅'; }
+        .assessment-box.gaps li::before { content: '⚠️'; }
+        .assessment-box.risks li::before { content: '🔴'; }
+
+        /* Recommendations */
+        .rec-item {
+            padding: 1.25rem; margin-bottom: 0.75rem;
+            background: var(--surface-light); border: 1px solid var(--border);
+            border-radius: 12px; transition: border-color 0.2s;
+        }
+        .rec-item:hover { border-color: var(--accent); }
+        .rec-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .rec-priority {
+            width: 28px; height: 28px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 800; color: white; flex-shrink: 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .rec-priority.p1 { background: linear-gradient(135deg, var(--accent), #8b5cf6); }
+        .rec-priority.p2 { background: linear-gradient(135deg, var(--green), #20a040); }
+        .rec-priority.p3 { background: linear-gradient(135deg, var(--yellow), var(--orange)); }
+        .rec-priority.p4 { background: linear-gradient(135deg, var(--text-dim), var(--text-faint)); }
+        .rec-title { font-weight: 700; font-size: 0.95rem; }
+        .rec-desc { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.75rem; }
+        .rec-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .rec-tag {
+            font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 6px;
+        }
+        .tag-effort { background: rgba(102,126,234,0.15); color: var(--accent); }
+        .tag-impact { background: rgba(39,202,64,0.15); color: var(--green); }
+        .tag-timeline { background: rgba(255,193,7,0.15); color: var(--yellow); }
+
+        /* Architecture diagram */
+        .mermaid-container {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 12px; padding: 2rem; margin-top: 1rem;
+            overflow-x: auto; text-align: center;
+        }
+        .mermaid-container svg { max-width: 100%; height: auto; }
+        .arch-desc { color: var(--text-dim); font-size: 0.9rem; margin-top: 1rem; line-height: 1.7; }
+
+        /* Change management */
+        .phase-timeline { position: relative; padding-left: 2rem; }
+        .phase-timeline::before {
+            content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(var(--accent), var(--green));
+        }
+        .phase-item { position: relative; margin-bottom: 1.5rem; }
+        .phase-item::before {
+            content: ''; position: absolute; left: -2rem; top: 6px;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--accent); border: 3px solid var(--bg);
+        }
+        .phase-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+        .phase-duration {
+            font-size: 0.75rem; color: var(--accent); font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;
+        }
+        .phase-activities, .phase-stakeholders { font-size: 0.85rem; color: var(--text-dim); }
+        .phase-activities li, .phase-stakeholders li { padding: 0.15rem 0; }
+        .phase-label {
+            font-size: 0.7rem; font-weight: 600; color: var(--text-faint);
+            text-transform: uppercase; letter-spacing: 1px; margin: 0.5rem 0 0.25rem;
+        }
+
+        /* Metrics / next steps */
+        .metric-list, .next-list { list-style: none; }
+        .metric-list li, .next-list li {
+            padding: 0.5rem 0; font-size: 0.9rem; color: var(--text-dim);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .metric-list li::before { content: '📊 '; }
+        .next-list li::before { content: '→ '; color: var(--accent); font-weight: 700; }
+
+        /* Export button */
+        .export-bar {
+            display: flex; gap: 1rem; justify-content: center;
+            flex-wrap: wrap; margin: 2rem 0;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem; text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.8rem; color: var(--text-faint);
+        }
+        footer a { color: var(--text-dim); text-decoration: none; }
+        footer a:hover { color: var(--accent); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-card { padding: 1.5rem; }
+            .result-card { padding: 1.5rem; }
+            .btn-row { flex-direction: column; }
+            .assessment-grid { grid-template-columns: 1fr; }
+            .rec-meta { flex-direction: column; gap: 0.5rem; }
+        }
+
+        /* Error */
+        .error-msg {
+            background: rgba(255,107,157,0.1); border: 1px solid rgba(255,107,157,0.3);
+            border-radius: 12px; padding: 1.5rem; text-align: center; color: var(--pink);
+            margin: 2rem 0;
+        }
+
+        /* Print styles for export */
+        @media print {
+            body { background: white; color: #1a1a1a; }
+            nav, .export-bar, .btn-row, footer, .hero { display: none !important; }
+            .results-section { display: block !important; padding: 0; max-width: none; }
+            .result-card {
+                background: white; border: 1px solid #ddd;
+                break-inside: avoid; margin-bottom: 1rem;
+            }
+            .exec-summary { border-left-color: #667eea; color: #333; }
+            .assessment-box { border: 1px solid #ccc; }
+            .rec-item { background: #f8f8f8; border: 1px solid #ddd; }
+            .mermaid-container { background: white; border: 1px solid #ddd; }
+            * { color: #1a1a1a !important; }
+            .assessment-box h4, .rec-tag, .phase-duration { color: #555 !important; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-brand"><span>🦾</span> Built by Bot</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/projects/">Projects</a>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <h1>🧠 <span class="gradient">BI Strategy Helper</span></h1>
+    <p>Describe your business problem and tech stack. Get architecture diagrams, a change management roadmap, and actionable recommendations.</p>
+</section>
+
+<!-- Input Form -->
+<section class="form-section" id="formSection">
+    <div class="form-card">
+        <div class="step-indicator">
+            <div class="step-dot active" id="dot1"></div>
+            <div class="step-dot" id="dot2"></div>
+            <div class="step-dot" id="dot3"></div>
+        </div>
+
+        <!-- Step 1: Business Problem -->
+        <div class="form-step active" id="step1">
+            <div class="step-title">What's the challenge?</div>
+            <div class="step-desc">Describe your business problem or what you're trying to achieve with data & analytics.</div>
+            <div class="form-group">
+                <label for="problem">Business Problem *</label>
+                <textarea id="problem" placeholder="e.g. We have data scattered across 5 systems and no single source of truth. Sales reports take 3 days to compile manually. Leadership wants real-time dashboards but we don't know where to start..." maxlength="3000"></textarea>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" onclick="nextStep(2)">Continue →</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Tech Stack -->
+        <div class="form-step" id="step2">
+            <div class="step-title">What are you working with?</div>
+            <div class="step-desc">Select your current tools or type them in. This helps us give specific, relevant advice.</div>
+            <div class="form-group">
+                <label>Current tools (click to select)</label>
+                <div class="chip-grid" id="chipGrid">
+                    <div class="chip" data-value="Excel/Spreadsheets">📊 Excel</div>
+                    <div class="chip" data-value="Power BI">📈 Power BI</div>
+                    <div class="chip" data-value="Tableau">📉 Tableau</div>
+                    <div class="chip" data-value="Looker">🔍 Looker</div>
+                    <div class="chip" data-value="SQL Server">🗄️ SQL Server</div>
+                    <div class="chip" data-value="PostgreSQL">🐘 PostgreSQL</div>
+                    <div class="chip" data-value="MySQL">🐬 MySQL</div>
+                    <div class="chip" data-value="Snowflake">❄️ Snowflake</div>
+                    <div class="chip" data-value="Databricks">🧱 Databricks</div>
+                    <div class="chip" data-value="Azure Data Factory">⚙️ Azure Data Factory</div>
+                    <div class="chip" data-value="AWS">☁️ AWS</div>
+                    <div class="chip" data-value="Azure">🔷 Azure</div>
+                    <div class="chip" data-value="GCP">🌐 GCP</div>
+                    <div class="chip" data-value="SAP">🏢 SAP</div>
+                    <div class="chip" data-value="Salesforce">💼 Salesforce</div>
+                    <div class="chip" data-value="HubSpot">🧲 HubSpot</div>
+                    <div class="chip" data-value="Python">🐍 Python</div>
+                    <div class="chip" data-value="dbt">🔧 dbt</div>
+                    <div class="chip" data-value="Airflow">🌬️ Airflow</div>
+                    <div class="chip" data-value="Kafka">📨 Kafka</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="techOther">Other tools / details</label>
+                <input type="text" id="techOther" placeholder="e.g. Custom ERP, Google Sheets, legacy Access databases..." maxlength="500">
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="prevStep(1)">← Back</button>
+                <button class="btn btn-primary" onclick="nextStep(3)">Continue →</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Context -->
+        <div class="form-step" id="step3">
+            <div class="step-title">A bit of context</div>
+            <div class="step-desc">This helps calibrate recommendations to your reality.</div>
+            <div class="form-group">
+                <label for="companySize">Company size</label>
+                <select id="companySize">
+                    <option value="">Select...</option>
+                    <option value="1-10 employees (Startup)">1-10 (Startup)</option>
+                    <option value="11-50 employees (Small)">11-50 (Small)</option>
+                    <option value="51-200 employees (Medium)">51-200 (Medium)</option>
+                    <option value="201-1000 employees (Large)">201-1000 (Large)</option>
+                    <option value="1000+ employees (Enterprise)">1000+ (Enterprise)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="budget">Budget range</label>
+                <select id="budget">
+                    <option value="">Select...</option>
+                    <option value="Minimal — open source / free tools only">Minimal (free/open source)</option>
+                    <option value="Low — under €10k">Under €10k</option>
+                    <option value="Medium — €10k-50k">€10k – €50k</option>
+                    <option value="High — €50k-200k">€50k – €200k</option>
+                    <option value="Enterprise — €200k+">€200k+</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="timeline">Desired timeline</label>
+                <select id="timeline">
+                    <option value="">Select...</option>
+                    <option value="ASAP — need results within weeks">ASAP (weeks)</option>
+                    <option value="Short-term — 1-3 months">1-3 months</option>
+                    <option value="Medium-term — 3-6 months">3-6 months</option>
+                    <option value="Long-term — 6-12 months">6-12 months</option>
+                    <option value="Strategic — 1-2 year transformation">1-2 year transformation</option>
+                </select>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+                <button class="btn btn-primary" id="analyzeBtn" onclick="analyze()">🧠 Analyze & Generate Strategy</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Analyzing your situation...</div>
+    <div class="loading-detail">Building architecture diagrams, change management plan, and recommendations</div>
+</div>
+
+<!-- Results -->
+<section class="results-section" id="results">
+    <!-- Filled by JS -->
+</section>
+
+<footer>
+    <p>Built by <a href="/">Built by Bot</a> 🦾 · Powered by AI · <a href="https://github.com/mineflowprocess/built-by-bot" target="_blank">GitHub</a></p>
+</footer>
+
+<script>
+    mermaid.initialize({
+        startOnLoad: false,
+        theme: 'dark',
+        themeVariables: {
+            primaryColor: '#667eea',
+            primaryTextColor: '#e8e8f0',
+            primaryBorderColor: '#252560',
+            lineColor: '#667eea',
+            secondaryColor: '#0f0f2a',
+            tertiaryColor: '#161640',
+            background: '#0f0f2a',
+            mainBkg: '#161640',
+            nodeBorder: '#252560',
+            clusterBkg: '#0f0f2a',
+            titleColor: '#e8e8f0',
+            edgeLabelBackground: '#0f0f2a'
+        }
+    });
+
+    // Chip selection
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => chip.classList.toggle('selected'));
+    });
+
+    // Step navigation
+    function nextStep(n) {
+        if (n === 2) {
+            const problem = document.getElementById('problem').value.trim();
+            if (problem.length < 10) {
+                document.getElementById('problem').focus();
+                document.getElementById('problem').style.borderColor = 'var(--pink)';
+                setTimeout(() => document.getElementById('problem').style.borderColor = '', 2000);
+                return;
+            }
+        }
+        showStep(n);
+    }
+
+    function prevStep(n) { showStep(n); }
+
+    function showStep(n) {
+        document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + n).classList.add('active');
+        for (let i = 1; i <= 3; i++) {
+            const dot = document.getElementById('dot' + i);
+            dot.classList.remove('active', 'done');
+            if (i < n) dot.classList.add('done');
+            if (i === n) dot.classList.add('active');
+        }
+    }
+
+    // Gather selected tech
+    function getSelectedTech() {
+        const chips = [...document.querySelectorAll('.chip.selected')].map(c => c.dataset.value);
+        const other = document.getElementById('techOther').value.trim();
+        if (other) chips.push(other);
+        return chips.join(', ') || 'Not specified';
+    }
+
+    // Analyze
+    async function analyze() {
+        const btn = document.getElementById('analyzeBtn');
+        btn.disabled = true;
+
+        const payload = {
+            problem: document.getElementById('problem').value.trim(),
+            techStack: getSelectedTech(),
+            companySize: document.getElementById('companySize').value,
+            budget: document.getElementById('budget').value,
+            timeline: document.getElementById('timeline').value
+        };
+
+        document.getElementById('formSection').style.display = 'none';
+        document.getElementById('loading').classList.add('active');
+
+        try {
+            const res = await fetch('/api/bi-strategy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.success) {
+                throw new Error(data.error || 'Analysis failed');
+            }
+
+            renderResults(data.strategy);
+        } catch (err) {
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').innerHTML = `
+                <div class="error-msg">
+                    <h3>❌ ${err.message}</h3>
+                    <p style="margin-top: 0.5rem; color: var(--text-dim);">Please try again or simplify your request.</p>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn btn-primary" onclick="startOver()">← Try Again</button>
+                </div>
+            `;
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    function startOver() {
+        document.getElementById('formSection').style.display = '';
+        document.getElementById('loading').classList.remove('active');
+        document.getElementById('results').classList.remove('active');
+        document.getElementById('results').innerHTML = '';
+        showStep(1);
+    }
+
+    // Render results
+    async function renderResults(s) {
+        document.getElementById('loading').classList.remove('active');
+        const el = document.getElementById('results');
+        el.classList.add('active');
+
+        let html = '';
+
+        // Export bar
+        html += `<div class="export-bar">
+            <button class="btn btn-secondary" onclick="startOver()">← New Analysis</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Export / Print Report</button>
+        </div>`;
+
+        // Executive Summary
+        html += `<div class="result-card">
+            <h2>📋 Executive Summary</h2>
+            <div class="exec-summary">${esc(s.executive_summary)}</div>
+        </div>`;
+
+        // Current State Assessment
+        if (s.current_state_assessment) {
+            const a = s.current_state_assessment;
+            html += `<div class="result-card">
+                <h2>🔍 Current State Assessment</h2>
+                <div class="assessment-grid">
+                    <div class="assessment-box strengths">
+                        <h4>Strengths</h4>
+                        <ul>${(a.strengths || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+                    </div>
+                    <div class="assessment-box gaps">
+                        <h4>Gaps</h4>
+                        <ul>${(a.gaps || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+                    </div>
+                    <div class="assessment-box risks">
+                        <h4>Risks</h4>
+                        <ul>${(a.risks || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // Recommendations
+        if (s.recommendations?.length) {
+            html += `<div class="result-card"><h2>🎯 Recommendations</h2>`;
+            s.recommendations.sort((a, b) => (a.priority || 99) - (b.priority || 99));
+            s.recommendations.forEach(r => {
+                const pClass = r.priority <= 1 ? 'p1' : r.priority === 2 ? 'p2' : r.priority === 3 ? 'p3' : 'p4';
+                html += `<div class="rec-item">
+                    <div class="rec-header">
+                        <div class="rec-priority ${pClass}">${r.priority}</div>
+                        <div class="rec-title">${esc(r.title)}</div>
+                    </div>
+                    <div class="rec-desc">${esc(r.description)}</div>
+                    <div class="rec-meta">
+                        <span class="rec-tag tag-effort">Effort: ${esc(r.effort)}</span>
+                        <span class="rec-tag tag-impact">Impact: ${esc(r.impact)}</span>
+                        <span class="rec-tag tag-timeline">⏱ ${esc(r.timeline)}</span>
+                    </div>
+                </div>`;
+            });
+            html += `</div>`;
+        }
+
+        // Architecture
+        if (s.architecture) {
+            html += `<div class="result-card">
+                <h2>🏗️ Architecture</h2>
+                <div class="arch-desc">${esc(s.architecture.description)}</div>
+                <div class="mermaid-container" id="mermaidContainer">
+                    <pre class="mermaid">${esc(s.architecture.mermaid)}</pre>
+                </div>
+            </div>`;
+        }
+
+        // Change Management
+        if (s.change_management) {
+            const cm = s.change_management;
+            html += `<div class="result-card"><h2>🔄 Change Management Roadmap</h2>`;
+            if (cm.phases?.length) {
+                html += `<div class="phase-timeline">`;
+                cm.phases.forEach(p => {
+                    html += `<div class="phase-item">
+                        <div class="phase-name">${esc(p.name)}</div>
+                        <div class="phase-duration">${esc(p.duration)}</div>
+                        <div class="phase-label">Activities</div>
+                        <ul class="phase-activities">${(p.activities || []).map(a => `<li>${esc(a)}</li>`).join('')}</ul>
+                        <div class="phase-label">Stakeholders</div>
+                        <ul class="phase-stakeholders">${(p.stakeholders || []).map(s => `<li>${esc(s)}</li>`).join('')}</ul>
+                    </div>`;
+                });
+                html += `</div>`;
+            }
+            if (cm.key_risks?.length) {
+                html += `<h3>Key Risks</h3><ul class="metric-list">${cm.key_risks.map(r => `<li>${esc(r)}</li>`).join('')}</ul>`;
+            }
+            if (cm.success_metrics?.length) {
+                html += `<h3>Success Metrics</h3><ul class="metric-list">${cm.success_metrics.map(m => `<li>${esc(m)}</li>`).join('')}</ul>`;
+            }
+            html += `</div>`;
+        }
+
+        // Next Steps
+        if (s.next_steps?.length) {
+            html += `<div class="result-card">
+                <h2>🚀 Immediate Next Steps</h2>
+                <ul class="next-list">${s.next_steps.map(n => `<li>${esc(n)}</li>`).join('')}</ul>
+            </div>`;
+        }
+
+        // Bottom export
+        html += `<div class="export-bar">
+            <button class="btn btn-secondary" onclick="startOver()">← New Analysis</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Export / Print Report</button>
+        </div>`;
+
+        el.innerHTML = html;
+
+        // Render mermaid
+        try {
+            await mermaid.run({ nodes: document.querySelectorAll('.mermaid') });
+        } catch (e) {
+            console.warn('Mermaid rendering failed', e);
+            const container = document.getElementById('mermaidContainer');
+            if (container) {
+                container.innerHTML += `<p style="color: var(--text-faint); font-size: 0.8rem; margin-top: 0.5rem;">Diagram could not render. Showing as text.</p>`;
+            }
+        }
+
+        // Scroll to top of results
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function esc(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = String(str);
+        return div.innerHTML;
+    }
+</script>
+
+</body>
+</html>
