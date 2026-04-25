@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -443,6 +444,8 @@
                     <option value="Strategic — 1-2 year transformation">1-2 year transformation</option>
                 </select>
             </div>
+            <!-- Cloudflare Turnstile (invisible) — only renders when TURNSTILE_SITE_KEY is configured -->
+            <div id="turnstileWidget" class="cf-turnstile" data-sitekey="" data-size="invisible" data-callback="onTurnstileSuccess" style="margin-top: 1rem;"></div>
             <div class="btn-row">
                 <button class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
                 <button class="btn btn-primary" id="analyzeBtn" onclick="analyze()">🧠 Analyze & Generate Strategy</button>
@@ -527,6 +530,20 @@
         return chips.join(', ') || 'Not specified';
     }
 
+    // Turnstile
+    let turnstileToken = null;
+    function onTurnstileSuccess(token) { turnstileToken = token; }
+
+    // Init Turnstile with site key from meta tag or env
+    // The site key is set in the widget's data-sitekey attribute.
+    // Set TURNSTILE_SITE_KEY as a placeholder — replace with real key in deployment.
+    (function initTurnstile() {
+        const siteKey = document.querySelector('meta[name="turnstile-site-key"]')?.content || '';
+        if (siteKey) {
+            document.getElementById('turnstileWidget').setAttribute('data-sitekey', siteKey);
+        }
+    })();
+
     // Analyze
     async function analyze() {
         const btn = document.getElementById('analyzeBtn');
@@ -537,7 +554,8 @@
             techStack: getSelectedTech(),
             companySize: document.getElementById('companySize').value,
             budget: document.getElementById('budget').value,
-            timeline: document.getElementById('timeline').value
+            timeline: document.getElementById('timeline').value,
+            turnstileToken: turnstileToken || undefined
         };
 
         document.getElementById('formSection').style.display = 'none';
