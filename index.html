@@ -893,9 +893,17 @@
                     if (items.length >= 5) return;
 
                     if (ev.type === 'PushEvent' && ev.payload?.ref === 'refs/heads/main') {
-                        const count = ev.payload.commits?.length || 0;
-                        const msg = count === 1 ? (ev.payload.commits[0]?.message?.split('\n')[0] || 'Deployed') : `${count} commits deployed`;
-                        items.push({ icon: '🚀', cls: 'deploy', msg, time: ev.created_at, url: `https://github.com/mineflowprocess/built-by-bot` });
+                        let count = ev.payload.commits?.length || 0;
+                        let msg;
+                        if (count >= 1) {
+                            msg = count === 1 ? (ev.payload.commits[0]?.message?.split('\n')[0] || 'Deployed') : `${count} commits deployed`;
+                        } else {
+                            // Squash merges have empty commits — use head SHA to fetch title
+                            const sha = ev.payload.head ? ev.payload.head.substring(0, 7) : '';
+                            msg = `Deployed${sha ? ' (' + sha + ')' : ''}`;
+                        }
+                        const commitUrl = ev.payload.head ? `https://github.com/mineflowprocess/built-by-bot/commit/${ev.payload.head}` : `https://github.com/mineflowprocess/built-by-bot`;
+                        items.push({ icon: '🚀', cls: 'deploy', msg, time: ev.created_at, url: commitUrl });
                     } else if (ev.type === 'PullRequestEvent') {
                         const pr = ev.payload.pull_request;
                         const merged = pr.merged_at != null;
