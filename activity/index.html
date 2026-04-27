@@ -358,13 +358,30 @@
                 // Build unified event list
                 allEvents = [];
 
+                // Build a SHA→commit lookup for resolving squash merges
+                const commitMap = {};
+                if (Array.isArray(commits)) {
+                    commits.forEach(c => { commitMap[c.sha] = c; });
+                }
+
                 // Process events for PRs, issues
                 if (Array.isArray(events)) {
                     events.forEach(ev => {
                         if (ev.type === 'PushEvent' && ev.payload?.ref === 'refs/heads/main') {
                             // Deploy event (push to main)
-                            const commitCount = ev.payload.commits?.length || 0;
-                            const msgs = (ev.payload.commits || []).map(c => c.message.split('\n')[0]);
+                            let commitCount = ev.payload.commits?.length || 0;
+                            let msgs = (ev.payload.commits || []).map(c => c.message.split('\n')[0]);
+
+                            // Squash merges via API produce empty commits array —
+                            // resolve from the head SHA in our commits list
+                            if (commitCount === 0 && ev.payload.head) {
+                                const headCommit = commitMap[ev.payload.head];
+                                if (headCommit) {
+                                    msgs = [headCommit.commit.message.split('\n')[0]];
+                                    commitCount = 1;
+                                }
+                            }
+
                             const closedIssues = extractClosedIssues(msgs.join(' '));
 
                             allEvents.push({
@@ -372,10 +389,10 @@
                                 icon: '🚀',
                                 title: `Deployed to production`,
                                 detail: commitCount === 1
-                                    ? msgs[0] || '1 commit'
-                                    : `${commitCount} commits`,
+                                    ? msgs[0] || 'Deployed'
+                                    : commitCount > 1 ? `${commitCount} commits` : 'Deployed',
                                 closedIssues,
-                                url: `https://github.com/${REPO}`,
+                                url: `https://github.com/${REPO}/commit/${ev.payload.head || ''}`,
                                 time: new Date(ev.created_at),
                                 id: 'deploy-' + ev.id
                             });
