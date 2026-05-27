@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Color Palette Extractor - Built by Bot</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #08081a;
+            --surface: #0f0f2a;
+            --surface-light: #161640;
+            --border: #252560;
+            --accent: #667eea;
+            --accent-glow: rgba(102, 126, 234, 0.25);
+            --green: #27ca40;
+            --text: #e8e8f0;
+            --text-dim: #7777aa;
+            --radius: 16px;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .back-link:hover { opacity: 1; }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: 0 0 60px rgba(102, 126, 234, 0.15);
+        }
+
+        .header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27ca40; }
+
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(135deg, #667eea, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Drop Zone */
+        .drop-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .drop-zone:hover, .drop-zone.drag-over {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+        .drop-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .drop-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+        .drop-text { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
+        .drop-text span { color: var(--accent); }
+
+        /* Preview */
+        #preview-section { display: none; margin-bottom: 1.5rem; }
+        #preview-img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 200px;
+        }
+        .slider-group label { color: var(--text-dim); font-size: 0.85rem; white-space: nowrap; }
+        .slider-group input[type="range"] {
+            flex: 1;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        #color-count-val {
+            color: var(--accent);
+            font-weight: 700;
+            min-width: 1.5rem;
+            text-align: right;
+        }
+
+        .btn {
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            border: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover { filter: brightness(1.15); }
+        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; filter: none; }
+
+        /* Swatches */
+        #swatches-section { display: none; }
+
+        .swatches-grid {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .swatch-card {
+            flex: 1;
+            min-width: 90px;
+            max-width: 130px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .swatch-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .swatch-color {
+            height: 80px;
+            position: relative;
+        }
+        .swatch-copy-hint {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.4);
+            opacity: 0;
+            font-size: 0.75rem;
+            transition: opacity 0.2s;
+        }
+        .swatch-card:hover .swatch-copy-hint { opacity: 1; }
+        .swatch-info {
+            background: var(--surface-light);
+            padding: 0.5rem;
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+        .swatch-hex { color: var(--text); font-weight: 700; font-size: 0.8rem; }
+        .swatch-weight { color: var(--accent); }
+
+        /* Output tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0;
+        }
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-dim);
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-bottom: -1px;
+        }
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .tab-btn:hover:not(.active) { color: var(--text); }
+
+        .tab-panels { margin-top: 1rem; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .code-block {
+            background: #050510;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.2rem;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            color: #c8d3f5;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            padding: 0.3rem 0.7rem;
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-dim);
+            font-family: inherit;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+        /* Download */
+        .actions-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+            transition: transform 0.25s;
+            z-index: 999;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        canvas { display: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/projects/" class="back-link">← back to projects</a>
+
+    <div class="card">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        </div>
+
+        <h1>🎨 Color Palette Extractor</h1>
+        <p class="subtitle">Drop an image → get CSS / Tailwind colors. Everything stays in your browser — nothing is uploaded.</p>
+
+        <!-- Drop zone -->
+        <div class="drop-zone" id="drop-zone">
+            <input type="file" id="file-input" accept="image/*">
+            <div class="drop-icon">🖼️</div>
+            <div class="drop-text">
+                <strong>Drag & drop an image here</strong><br>
+                or <span>click to browse</span><br>
+                <small>PNG, JPG, GIF, WebP — stays local, never uploaded</small>
+            </div>
+        </div>
+
+        <!-- Image preview -->
+        <div id="preview-section">
+            <img id="preview-img" src="" alt="Preview">
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="slider-group">
+                <label>Colors:</label>
+                <input type="range" id="color-count" min="3" max="10" value="6">
+                <span id="color-count-val">6</span>
+            </div>
+            <button class="btn btn-primary" id="extract-btn" disabled>Extract palette</button>
+        </div>
+
+        <!-- Swatches -->
+        <div id="swatches-section">
+            <div class="swatches-grid" id="swatches"></div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="raw">Raw values</button>
+                <button class="tab-btn" data-tab="css">CSS variables</button>
+                <button class="tab-btn" data-tab="tailwind">Tailwind config</button>
+            </div>
+            <div class="tab-panels">
+                <div class="tab-panel active" id="tab-raw">
+                    <div class="code-block" id="output-raw">
+                        <button class="copy-btn" onclick="copyOutput('raw')">copy</button>
+                        <span id="raw-content"></span>
+                    </div>
+                </div>
+                <div class="tab-panel" id="tab-css">
+                    <div class="code-block" id="output-css">
+                        <button class="copy-btn" onclick="copyOutput('css')">copy</button>
+                        <span id="css-content"></span>
+                    </div>
+                </div>
+                <div class="tab-panel" id="tab-tailwind">
+                    <div class="code-block" id="output-tailwind">
+                        <button class="copy-btn" onclick="copyOutput('tailwind')">copy</button>
+                        <span id="tailwind-content"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions-row">
+                <button class="btn btn-outline" onclick="downloadPNG()">⬇ Download swatch PNG</button>
+                <button class="btn btn-outline" onclick="resetTool()">↺ New image</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<canvas id="canvas"></canvas>
+
+<script>
+// ─── State ───────────────────────────────────────────────────────────────
+let currentPalette = [];
+let currentFile = null;
+
+// ─── DOM refs ────────────────────────────────────────────────────────────
+const dropZone    = document.getElementById('drop-zone');
+const fileInput   = document.getElementById('file-input');
+const previewSec  = document.getElementById('preview-section');
+const previewImg  = document.getElementById('preview-img');
+const extractBtn  = document.getElementById('extract-btn');
+const colorSlider = document.getElementById('color-count');
+const colorVal    = document.getElementById('color-count-val');
+const swatchesSec = document.getElementById('swatches-section');
+const swatchGrid  = document.getElementById('swatches');
+const canvas      = document.getElementById('canvas');
+const ctx         = canvas.getContext('2d');
+
+// ─── Drag & drop ─────────────────────────────────────────────────────────
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) loadFile(file);
+});
+fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) loadFile(fileInput.files[0]);
+});
+
+// ─── Slider ──────────────────────────────────────────────────────────────
+colorSlider.addEventListener('input', () => { colorVal.textContent = colorSlider.value; });
+
+// ─── Load file ───────────────────────────────────────────────────────────
+function loadFile(file) {
+    currentFile = file;
+    const url = URL.createObjectURL(file);
+    previewImg.src = url;
+    previewSec.style.display = 'block';
+    swatchesSec.style.display = 'none';
+    extractBtn.disabled = false;
+    extractBtn.textContent = 'Extract palette';
+}
+
+// ─── Extract ─────────────────────────────────────────────────────────────
+extractBtn.addEventListener('click', () => {
+    extractBtn.disabled = true;
+    extractBtn.textContent = 'Extracting…';
+    // Let the browser paint the disabled state before the heavy work
+    setTimeout(doExtract, 30);
+});
+
+function doExtract() {
+    const img = new Image();
+    img.onload = () => {
+        // Downsample for speed
+        const MAX = 200;
+        const scale = Math.min(MAX / img.width, MAX / img.height, 1);
+        canvas.width  = Math.round(img.width  * scale);
+        canvas.height = Math.round(img.height * scale);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        const pixels = [];
+        for (let i = 0; i < data.length; i += 4) {
+            if (data[i + 3] < 128) continue; // skip transparent
+            pixels.push([data[i], data[i+1], data[i+2]]);
+        }
+
+        const k = parseInt(colorSlider.value);
+        currentPalette = kMeans(pixels, k);
+        renderPalette();
+        extractBtn.disabled = false;
+        extractBtn.textContent = 'Re-extract';
+    };
+    img.src = previewImg.src;
+}
+
+// ─── K-Means clustering ──────────────────────────────────────────────────
+function kMeans(pixels, k, maxIter = 20) {
+    // Initialise centers using k-means++ style (spread out picks)
+    let centers = [pixels[Math.floor(Math.random() * pixels.length)]];
+    while (centers.length < k) {
+        const dists = pixels.map(p => Math.min(...centers.map(c => dist2(p, c))));
+        const total = dists.reduce((a, b) => a + b, 0);
+        let r = Math.random() * total;
+        for (let i = 0; i < pixels.length; i++) {
+            r -= dists[i];
+            if (r <= 0) { centers.push(pixels[i]); break; }
+        }
+    }
+
+    let assignments = new Int32Array(pixels.length);
+    for (let iter = 0; iter < maxIter; iter++) {
+        let changed = false;
+        for (let i = 0; i < pixels.length; i++) {
+            let best = 0, bestD = Infinity;
+            for (let c = 0; c < k; c++) {
+                const d = dist2(pixels[i], centers[c]);
+                if (d < bestD) { bestD = d; best = c; }
+            }
+            if (assignments[i] !== best) { assignments[i] = best; changed = true; }
+        }
+        if (!changed) break;
+
+        // Recompute centers
+        const sums = Array.from({length: k}, () => [0,0,0,0]);
+        for (let i = 0; i < pixels.length; i++) {
+            const c = assignments[i];
+            sums[c][0] += pixels[i][0];
+            sums[c][1] += pixels[i][1];
+            sums[c][2] += pixels[i][2];
+            sums[c][3]++;
+        }
+        centers = sums.map(s => s[3] ? [s[0]/s[3], s[1]/s[3], s[2]/s[3]] : centers[0]);
+    }
+
+    // Count sizes & sort by weight desc
+    const counts = new Int32Array(k);
+    for (let i = 0; i < pixels.length; i++) counts[assignments[i]]++;
+    const total = pixels.length;
+
+    return centers
+        .map((c, i) => ({
+            r: Math.round(c[0]),
+            g: Math.round(c[1]),
+            b: Math.round(c[2]),
+            weight: counts[i] / total
+        }))
+        .filter(c => c.weight > 0)
+        .sort((a, b) => b.weight - a.weight);
+}
+
+function dist2(a, b) {
+    const dr = a[0]-b[0], dg = a[1]-b[1], db = a[2]-b[2];
+    return dr*dr + dg*dg + db*db;
+}
+
+// ─── Render palette ───────────────────────────────────────────────────────
+function toHex(c) {
+    return '#' + [c.r, c.g, c.b].map(v => v.toString(16).padStart(2,'0')).join('');
+}
+function toRgb(c) { return `rgb(${c.r}, ${c.g}, ${c.b})`; }
+
+function renderPalette() {
+    swatchesSec.style.display = 'block';
+    swatchGrid.innerHTML = '';
+
+    currentPalette.forEach((c, i) => {
+        const hex = toHex(c);
+        const pct = Math.round(c.weight * 100);
+        const card = document.createElement('div');
+        card.className = 'swatch-card';
+        card.title = `Click to copy ${hex}`;
+        card.innerHTML = `
+            <div class="swatch-color" style="background:${hex}">
+                <div class="swatch-copy-hint">copy hex</div>
+            </div>
+            <div class="swatch-info">
+                <div class="swatch-hex">${hex}</div>
+                <div>${toRgb(c)}</div>
+                <div class="swatch-weight">~${pct}% of image</div>
+            </div>`;
+        card.addEventListener('click', () => { copyText(hex); showToast(`Copied ${hex}`); });
+        swatchGrid.appendChild(card);
+    });
+
+    updateOutputs();
+}
+
+function updateOutputs() {
+    // Raw values
+    const rawLines = currentPalette.map((c, i) => {
+        const hex = toHex(c);
+        return `color-${i+1}:  ${hex}   ${toRgb(c)}`;
+    });
+    document.getElementById('raw-content').textContent = rawLines.join('\n');
+
+    // CSS custom properties
+    const cssLines = [':root {', ...currentPalette.map((c, i) =>
+        `  --color-${i+1}: ${toHex(c)};`
+    ), '}'];
+    document.getElementById('css-content').textContent = cssLines.join('\n');
+
+    // Tailwind config
+    const twEntries = currentPalette.map((c, i) =>
+        `      'palette-${i+1}': '${toHex(c)}',`
+    );
+    const twLines = [
+        '// tailwind.config.js',
+        'module.exports = {',
+        '  theme: {',
+        '    extend: {',
+        '      colors: {',
+        ...twEntries,
+        '      },',
+        '    },',
+        '  },',
+        '};'
+    ];
+    document.getElementById('tailwind-content').textContent = twLines.join('\n');
+}
+
+// ─── Tabs ─────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+});
+
+// ─── Copy helpers ─────────────────────────────────────────────────────────
+function copyOutput(tab) {
+    const map = { raw: 'raw-content', css: 'css-content', tailwind: 'tailwind-content' };
+    const text = document.getElementById(map[tab]).textContent;
+    copyText(text);
+    const btn = document.querySelector(`#output-${tab} .copy-btn`);
+    btn.textContent = 'copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
+}
+
+function copyText(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).catch(() => legacyCopy(text));
+    } else { legacyCopy(text); }
+}
+function legacyCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+}
+
+// ─── Download PNG swatch sheet ────────────────────────────────────────────
+function downloadPNG() {
+    const W = 160, H = 120, PAD = 12;
+    const n = currentPalette.length;
+    const offscreen = document.createElement('canvas');
+    offscreen.width  = n * W + PAD * 2;
+    offscreen.height = H + PAD * 2 + 30;
+    const oc = offscreen.getContext('2d');
+
+    oc.fillStyle = '#08081a';
+    oc.fillRect(0, 0, offscreen.width, offscreen.height);
+
+    currentPalette.forEach((c, i) => {
+        const x = PAD + i * W;
+        oc.fillStyle = toHex(c);
+        oc.fillRect(x, PAD, W - 4, H);
+        oc.fillStyle = '#e8e8f0';
+        oc.font = '13px monospace';
+        oc.fillText(toHex(c), x + 6, PAD + H + 20);
+    });
+
+    offscreen.toBlob(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'palette.png';
+        a.click();
+    });
+    showToast('Downloading palette.png…');
+}
+
+// ─── Reset ────────────────────────────────────────────────────────────────
+function resetTool() {
+    currentPalette = [];
+    currentFile = null;
+    previewSec.style.display = 'none';
+    swatchesSec.style.display = 'none';
+    extractBtn.disabled = true;
+    extractBtn.textContent = 'Extract palette';
+    fileInput.value = '';
+}
+
+// ─── Toast ────────────────────────────────────────────────────────────────
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>
