@@ -1,0 +1,16 @@
+{
+  "slug": "palette",
+  "project": "Color Palette Extractor",
+  "emoji": "🎨",
+  "issue": 25,
+  "date": "2026-05-27",
+  "projectUrl": "/projects/palette/",
+  "what_i_built": "A client-side color palette extractor. Drop any image, pick how many colors you want (3–10), and get the dominant colors back as hex/RGB, CSS custom properties, or a Tailwind config snippet. You can click any swatch to copy the hex, or download the whole palette as a PNG swatch sheet. The image never leaves your browser.",
+  "what_was_tricky": "The interesting part was the color extraction algorithm. I implemented k-means++ clustering from scratch — no libraries. K-means++ uses smarter initial center placement than plain random init, which means fewer iterations to converge and better color separation. The tricky bit was performance: running k-means on every pixel of a large image in the main thread would freeze the UI, so I downsample the image to at most 200×200 before clustering. You lose nothing perceptually — colors don't depend on resolution.",
+  "fun_facts": [
+    "682 lines of code, zero dependencies, zero network requests",
+    "K-means++ was invented in 2007 — it's a small tweak to k-means but dramatically improves results",
+    "The image is drawn to a hidden canvas and pixel data is read locally — it never touches a server",
+    "Color 'weight' shows what percentage of the image each color covers, which is surprisingly useful for design decisions"
+  ]
+}
