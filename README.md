@@ -1,14 +1,16 @@
 # 🦾 Built by Bot
 
-A website that's written, deployed, and updated entirely by an AI assistant.
+A public AI-agent workshop: visitors submit small briefs, watch them enter the queue, and follow the path from build notes to shipped mini-projects.
 
 **Live site:** [View Demo](https://polite-glacier-0ea8c2510.7.azurestaticapps.net) *(Azure Static Web Apps)*
 
 ## What is this?
 
-This is a demo of AI-driven development. The entire site — HTML, CSS, API functions, deployment configuration — was created through a conversation with an AI assistant named Hans, powered by [OpenClaw](https://github.com/openclaw/openclaw).
+This is a demo of AI-assisted development with a visible workflow. Hans and the agent crew turn selected small briefs into live HTML/CSS/JS projects, while the queue, dev log, review trail, and shipped work stay inspectable.
 
-**No human wrote a single line of code.** The human just said what they wanted, and the bot built it.
+The point is not “bots magically build everything.” The point is a public loop: **Brief → Queue → Build → Review → Ship**.
+
+See the public write-up: [case study: Built by Bot as a public AI-agent workshop](./docs/case-studies/public-agent-workshop-reframe.md).
 
 ## Architecture
 
@@ -26,42 +28,42 @@ static-site/
 
 ### Key Design Decisions
 
-- **Projects pull from GitHub Issues** — No manual tracking needed. Close an issue → shows as "Done" on the site
-- **Standalone projects** live in `/projects/{slug}/` — Keeps landing page clean
-- **Monetization via Ko-fi** — Priority requests (€5) to jump the queue
+- **Projects pull from GitHub Issues** — Public requests and shipped work stay visible
+- **Standalone projects** live in `/projects/{slug}/` — Keeps the workshop simple and inspectable
+- **Review before shipping** — Agent work is checked for obvious bugs, unsafe rendering, and overconfident copy before release
 
 ## How it works
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  Human: "Let's build a website"                             │
+│  Visitor: submits a small brief                             │
 │     ↓                                                       │
-│  Bot: Creates HTML, pushes to GitHub                        │
+│  Queue: request becomes visible as a GitHub issue            │
 │     ↓                                                       │
-│  GitHub Actions: Triggers Azure deployment                  │
+│  Agents: scope, build, and review a selected slice           │
 │     ↓                                                       │
-│  Site goes live with build info injected at deploy time     │
+│  Human approval + GitHub Actions: release to the live site   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ## Features
 
 - **Live build info** — Shows commit hash, message, author, and deploy time
-- **Feature request form** — Visitors submit ideas → become GitHub Issues
-- **Priority requests** — €5 via Ko-fi to get features built first
-- **Projects showcase** — Auto-generated from GitHub issues, zero maintenance
+- **Feature request form** — Visitors submit ideas that can become GitHub Issues
+- **Workshop process** — Brief, queue, build, review, and ship are explained publicly
+- **Projects showcase** — Auto-generated from GitHub issues, with live project links where available
 - **Standalone tools** — Individual projects at `/projects/{name}/`
-- **Auto-deployment** — Every push triggers a new deploy
+- **Auto-deployment** — Approved changes deploy through GitHub Actions
 
 ## The Loop
 
-1. **Visitor** submits a feature request on the site
+1. **Visitor** submits a small feature request or project brief
 2. **API function** creates a GitHub Issue with the `feature-request` label
-3. **Human** (or bot) sees the request and builds it
-4. **Bot** creates the feature in `/projects/{name}/` if standalone
-5. **Bot** pushes to GitHub, closes the issue
-6. **Azure** auto-deploys
-7. **Projects page** auto-updates (pulls from GitHub API)
+3. **Human/agent workflow** decides whether the request is small, safe, and useful enough to build
+4. **Agent crew** scopes, builds, and reviews the selected slice
+5. **Human approval** decides whether the PR is merged
+6. **Azure** deploys approved changes
+7. **Projects page and dev log** expose shipped work and receipts
 
 ## Adding New Projects
 
