@@ -204,6 +204,60 @@
             margin-top: 1rem; color: var(--text-faint);
             font-size: 0.86rem; max-width: 620px;
         }
+        .latest-receipt {
+            width: min(720px, 100%);
+            margin: 1.5rem 0 0;
+            padding: 1rem 1.15rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 0.9rem;
+            border: 1px solid rgba(124, 140, 255, 0.28);
+            border-radius: 16px;
+            background:
+                linear-gradient(135deg, rgba(124, 140, 255, 0.12), rgba(49, 209, 88, 0.055)),
+                rgba(255,255,255,0.035);
+            box-shadow: 0 18px 45px rgba(0,0,0,0.22);
+            text-align: left;
+        }
+        .receipt-icon {
+            width: 42px; height: 42px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 13px;
+            background: rgba(49, 209, 88, 0.12);
+            border: 1px solid rgba(49, 209, 88, 0.24);
+            font-size: 1.2rem;
+        }
+        .receipt-label {
+            display: block;
+            margin-bottom: 0.15rem;
+            color: var(--green);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+        .receipt-title {
+            display: block;
+            color: var(--text);
+            font-weight: 800;
+            letter-spacing: -0.01em;
+        }
+        .receipt-meta {
+            display: block;
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            margin-top: 0.12rem;
+        }
+        .receipt-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.86rem;
+            white-space: nowrap;
+        }
+        .receipt-link:hover { color: var(--pink); }
 
         .workshop-section {
             padding: 4rem 2rem;
@@ -577,6 +631,15 @@
             .step-grid, .proof-strip, .proof-case-grid, .guidance-grid { grid-template-columns: 1fr; }
             .workshop-section { padding: 3rem 1rem; }
             .status-bar { gap: 1rem; font-size: 0.68rem; }
+            .latest-receipt {
+                grid-template-columns: auto 1fr;
+                align-items: flex-start;
+                text-align: left;
+            }
+            .receipt-link {
+                grid-column: 2;
+                justify-self: start;
+            }
             .note-card { padding: 1.5rem; }
             .note-header { gap: 0.75rem; }
             .note-emoji { width: 44px; height: 44px; font-size: 1.6rem; }
@@ -588,11 +651,12 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .hero h1, .hero-subtitle, .hero-cta {
+        .hero h1, .hero-subtitle, .hero-cta, .latest-receipt {
             animation: fadeInUp 0.7s ease-out backwards;
         }
         .hero-subtitle { animation-delay: 0.1s; }
         .hero-cta { animation-delay: 0.2s; }
+        .latest-receipt { animation-delay: 0.28s; }
 
         html { scroll-behavior: smooth; }
     </style>
@@ -640,7 +704,7 @@
         <h1>Reviewed AI workflows, <span class="gradient">shown in the open.</span></h1>
 
         <p class="hero-subtitle">
-            Built by Bot is an independent landing page for small AI and data workflow experiments that leave receipts: public briefs, visible queue, review notes, shipped demos, and the occasional workshop scar.
+            Built by Bot is an independent proof-of-work lab for small AI and data workflow experiments that leave receipts: public briefs, visible queue, review notes, shipped demos, and the occasional workshop scar.
         </p>
 
         <div class="hero-cta">
@@ -648,6 +712,15 @@
             <a href="#proof" class="btn btn-secondary">Review the proof</a>
         </div>
         <p class="hero-proof">Not a black-box agency pitch. Not a benchmark theater. A public build loop for useful, reviewable slices of AI-assisted work.</p>
+        <aside class="latest-receipt" aria-label="Latest public receipt">
+            <div class="receipt-icon" aria-hidden="true">↳</div>
+            <div>
+                <span class="receipt-label">Latest receipt</span>
+                <span class="receipt-title" id="receiptTitle">Reviewed homepage rebrand</span>
+                <span class="receipt-meta" id="receiptMeta">Public queue · review notes · live deploy trail</span>
+            </div>
+            <a class="receipt-link" id="receiptLink" href="/activity/">View activity →</a>
+        </aside>
         <div class="proof-strip" aria-label="Proof points">
             <div class="proof-stat"><strong>Public queue</strong><span>Accepted briefs become inspectable GitHub issues.</span></div>
             <div class="proof-stat"><strong>Reviewed changes</strong><span>Bot work is checked before it counts as shipped.</span></div>
@@ -1124,6 +1197,18 @@
             return `https://github.com/mineflowprocess/built-by-bot/pull/${Math.floor(n)}`;
         }
 
+        function updateHeroReceipt(item) {
+            if (!item) return;
+            const title = document.getElementById('receiptTitle');
+            const meta = document.getElementById('receiptMeta');
+            const link = document.getElementById('receiptLink');
+            if (!title || !meta || !link) return;
+            title.textContent = item.msg;
+            meta.textContent = `${timeSince(new Date(item.time))} · pulled from the public GitHub activity trail`;
+            link.href = item.url || '/activity/';
+            link.textContent = 'Inspect receipt →';
+        }
+
         // ─── Activity Teaser ───
         async function loadActivity() {
             const feed = document.getElementById('activityFeed');
@@ -1173,6 +1258,7 @@
 
                 if (!items.length) { feed.innerHTML = '<div style="text-align: center; padding: 1rem; color: var(--text-faint); font-size: 0.85rem;">No recent activity</div>'; return; }
 
+                updateHeroReceipt(items[0]);
                 feed.innerHTML = items.map(i => `
                     <div class="activity-item">
                         <div class="activity-icon ${i.cls}">${i.icon}</div>
