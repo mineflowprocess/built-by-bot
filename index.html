@@ -939,6 +939,8 @@
 
                 issues.forEach(issue => {
                     if (count >= 6) return;
+                    if (isSafetyTestIssue(issue)) return;
+
                     const title = issue.title.replace(/\[Feature Request\]\s*/i, '').trim();
                     const url = getUrl(issue.title);
                     const key = url || title;
@@ -1046,6 +1048,11 @@
             const n = Number(number);
             if (!Number.isFinite(n) || n <= 0) return 'https://github.com/mineflowprocess/built-by-bot/issues';
             return `https://github.com/mineflowprocess/built-by-bot/issues/${Math.floor(n)}`;
+        }
+
+        function isSafetyTestIssue(issue) {
+            const title = String(issue?.title || '').toLowerCase();
+            return Number(issue?.number) === 31 || title.includes('destroy this website');
         }
 
         function safeCommitUrl(sha) {

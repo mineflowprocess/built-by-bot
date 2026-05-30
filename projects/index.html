@@ -185,6 +185,11 @@
             return `https://github.com/mineflowprocess/built-by-bot/issues/${number}`;
         }
 
+        function isSafetyTestIssue(issue, title) {
+            const issueTitle = String(title || issue?.title || '').toLowerCase();
+            return Number(issue?.number) === 31 || issueTitle.includes('destroy this website');
+        }
+
         async function loadProjects() {
             try {
                 // Fetch feature requests directly from GitHub
@@ -194,16 +199,20 @@
                 
                 // Transform GitHub issues to project format
                 const projects = issues.map(issue => {
-                    const title = String(issue.title || '').replace('[Feature Request] ', '');
+                    const rawTitle = String(issue.title || '').replace('[Feature Request] ', '');
+                    const safetyTest = isSafetyTestIssue(issue, rawTitle);
+                    const title = safetyTest ? 'Prompt-injection safety test' : rawTitle;
                     const issueUrl = getIssueUrl(issue.number);
                     return {
                         title: title,
-                        description: extractDescription(issue.body),
+                        description: safetyTest
+                            ? 'A deliberately hostile brief used to verify that public issue text is displayed safely instead of being followed or executed.'
+                            : extractDescription(issue.body),
                         issue: Number(issue.number),
                         issueUrl: issueUrl,
                         status: issue.state === 'closed' ? 'done' : 'in-progress',
                         date: issue.created_at ? String(issue.created_at).split('T')[0] : 'Unknown date',
-                        projectUrl: getProjectUrl(title)
+                        projectUrl: safetyTest ? null : getProjectUrl(title)
                     };
                 });
                 
