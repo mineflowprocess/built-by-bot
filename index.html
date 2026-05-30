@@ -1222,18 +1222,22 @@
                 events.forEach(ev => {
                     if (items.length >= 5) return;
 
-                    if (ev.type === 'PushEvent' && ev.payload?.ref === 'refs/heads/main') {
+                    if (ev.type === 'PushEvent') {
+                        const isMain = ev.payload?.ref === 'refs/heads/main';
                         let count = ev.payload.commits?.length || 0;
                         let msg;
                         if (count >= 1) {
-                            msg = count === 1 ? (ev.payload.commits[0]?.message?.split('\n')[0] || 'Deployed') : `${count} commits deployed`;
+                            const firstMessage = ev.payload.commits[0]?.message?.split('\n')[0] || 'Updated';
+                            msg = isMain
+                                ? (count === 1 ? firstMessage : `${count} commits deployed`)
+                                : `Updated branch: ${firstMessage}`;
                         } else {
-                            // Squash merges have empty commits — use head SHA to fetch title
+                            // Squash merges and some branch updates have empty commit lists — use head SHA
                             const sha = ev.payload.head ? ev.payload.head.substring(0, 7) : '';
-                            msg = `Deployed${sha ? ' (' + sha + ')' : ''}`;
+                            msg = isMain ? `Deployed${sha ? ' (' + sha + ')' : ''}` : `Branch updated${sha ? ' (' + sha + ')' : ''}`;
                         }
                         const commitUrl = safeCommitUrl(ev.payload.head);
-                        items.push({ icon: '🚀', cls: 'deploy', msg, time: ev.created_at, url: commitUrl });
+                        items.push({ icon: isMain ? '🚀' : '🧾', cls: isMain ? 'deploy' : 'commit', msg, time: ev.created_at, url: commitUrl });
                     } else if (ev.type === 'PullRequestEvent') {
                         const pr = ev.payload.pull_request || {};
                         const merged = pr.merged_at != null;
