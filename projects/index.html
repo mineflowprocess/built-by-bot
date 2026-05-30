@@ -171,6 +171,20 @@
     </div>
 
     <script>
+        function esc(value) {
+            const div = document.createElement('div');
+            div.textContent = value == null ? '' : String(value);
+            return div.innerHTML;
+        }
+
+        function getIssueUrl(issueNumber) {
+            const number = Number(issueNumber);
+            if (!Number.isFinite(number) || number <= 0 || !Number.isInteger(number)) {
+                return null;
+            }
+            return `https://github.com/mineflowprocess/built-by-bot/issues/${number}`;
+        }
+
         async function loadProjects() {
             try {
                 // Fetch feature requests directly from GitHub
@@ -180,14 +194,15 @@
                 
                 // Transform GitHub issues to project format
                 const projects = issues.map(issue => {
-                    const title = issue.title.replace('[Feature Request] ', '');
+                    const title = String(issue.title || '').replace('[Feature Request] ', '');
+                    const issueUrl = getIssueUrl(issue.number);
                     return {
                         title: title,
                         description: extractDescription(issue.body),
-                        issue: issue.number,
+                        issue: Number(issue.number),
+                        issueUrl: issueUrl,
                         status: issue.state === 'closed' ? 'done' : 'in-progress',
-                        date: issue.created_at.split('T')[0],
-                        url: issue.html_url,
+                        date: issue.created_at ? String(issue.created_at).split('T')[0] : 'Unknown date',
                         projectUrl: getProjectUrl(title)
                     };
                 });
@@ -205,20 +220,30 @@
                     return;
                 }
                 
-                grid.innerHTML = projects.map(p => `
+                grid.innerHTML = projects.map(p => {
+                    const statusText = p.status === 'done' ? '✓ Done' : '⏳ Building';
+                    const issueLink = p.issueUrl
+                        ? `<a href="${esc(p.issueUrl)}" target="_blank" rel="noopener noreferrer">Issue #${esc(p.issue)}</a>`
+                        : '';
+                    const tryItLink = p.status === 'done' && p.projectUrl
+                        ? `<a href="${esc(p.projectUrl)}" class="try-it">${esc('Try it →')}</a>`
+                        : '';
+
+                    return `
                     <div class="project-card">
                         <div class="project-header">
-                            <span class="project-title">${p.title}</span>
-                            <span class="project-status ${p.status}">${p.status === 'done' ? '✓ Done' : '⏳ Building'}</span>
+                            <span class="project-title">${esc(p.title)}</span>
+                            <span class="project-status ${esc(p.status)}">${esc(statusText)}</span>
                         </div>
-                        <p class="project-description">${p.description}</p>
+                        <p class="project-description">${esc(p.description)}</p>
                         <div class="project-meta">
-                            <span>📅 ${p.date}</span>
-                            <a href="${p.url}" target="_blank">Issue #${p.issue}</a>
-                            ${p.status === 'done' && p.projectUrl ? `<a href="${p.projectUrl}" class="try-it">Try it →</a>` : ''}
+                            <span>📅 ${esc(p.date)}</span>
+                            ${issueLink}
+                            ${tryItLink}
                         </div>
                     </div>
-                `).join('');
+                `;
+                }).join('');
             } catch (e) {
                 document.getElementById('projectsGrid').innerHTML = 
                     '<div class="empty-state">Could not load projects — try refreshing</div>';
@@ -267,12 +292,13 @@
         
         function extractDescription(body) {
             if (!body) return 'No description';
+            const text = String(body);
             // Extract description from the issue body format
-            const match = body.match(/\*\*Description:\*\*\n([\s\S]*?)(\n---|\n\n|$)/);
+            const match = text.match(/\*\*Description:\*\*\n([\s\S]*?)(\n---|\n\n|$)/);
             if (match) {
                 return match[1].trim().substring(0, 150) + (match[1].length > 150 ? '...' : '');
             }
-            return body.substring(0, 150) + (body.length > 150 ? '...' : '');
+            return text.substring(0, 150) + (text.length > 150 ? '...' : '');
         }
         
         loadProjects();
