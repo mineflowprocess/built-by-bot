@@ -34,6 +34,26 @@
             overflow-x: hidden;
             line-height: 1.6;
         }
+        .skip-link {
+            position: fixed;
+            top: 0.75rem;
+            left: 0.75rem;
+            z-index: 100;
+            transform: translateY(-150%);
+            padding: 0.65rem 0.9rem;
+            border-radius: 999px;
+            background: var(--accent);
+            color: white;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+            transition: transform 0.2s ease;
+        }
+        .skip-link:focus {
+            transform: translateY(0);
+            outline: 3px solid rgba(255,255,255,0.8);
+            outline-offset: 3px;
+        }
 
         /* ─── Navigation ─── */
         nav {
@@ -664,7 +684,8 @@
 <body>
 
     <!-- Nav -->
-    <nav>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <nav aria-label="Primary navigation">
         <a href="/" class="nav-brand">
             <span class="nav-mark">BB</span> Built by Bot
         </a>
@@ -699,7 +720,7 @@
     </div>
 
     <!-- Hero -->
-    <section class="hero">
+    <section class="hero" id="main-content" tabindex="-1">
         <div class="hero-kicker">PUBLIC PROOF-OF-WORK · BRIEF → QUEUE → BUILD → REVIEW → SHIP</div>
         <h1>Reviewed AI workflows, <span class="gradient">shown in the open.</span></h1>
 
