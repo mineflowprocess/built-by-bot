@@ -283,7 +283,7 @@
             padding: 4rem 2rem;
             max-width: 1100px; margin: 0 auto;
         }
-        .step-grid, .board-grid, .crew-grid, .starter-grid, .proof-strip, .proof-case-grid, .guidance-grid {
+        .step-grid, .board-grid, .crew-grid, .starter-grid, .proof-strip, .proof-case-grid, .guidance-grid, .after-submit-grid, .proof-channel-grid {
             display: grid; gap: 1rem;
         }
         .proof-strip { grid-template-columns: repeat(3, 1fr); margin-top: 2.25rem; width: min(980px, 100%); }
@@ -308,6 +308,7 @@
         .guidance-grid { grid-template-columns: repeat(2, 1fr); }
         .guidance-card ul { margin-top: 0.9rem; padding-left: 1.1rem; color: var(--text-dim); font-size: 0.86rem; }
         .guidance-card li { margin-bottom: 0.45rem; }
+        .after-submit-grid { grid-template-columns: repeat(2, 1fr); margin-top: 1.2rem; }
         .step-grid { grid-template-columns: repeat(4, 1fr); }
         .board-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
         .crew-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
@@ -331,6 +332,15 @@
         .step-card p, .board-card p, .crew-card p, .starter-card p {
             font-size: 0.95rem; line-height: 1.65; color: #b8beca;
         }
+        .after-submit-card {
+            background: rgba(255,255,255,0.035); border: 1px solid var(--border);
+            border-radius: 14px; padding: 1rem;
+        }
+        .after-submit-card strong {
+            display: block; margin-bottom: 0.35rem; color: var(--text);
+            font-size: 0.92rem;
+        }
+        .after-submit-card span { color: var(--text-dim); font-size: 0.82rem; line-height: 1.5; }
         .board-status {
             display: inline-flex; padding: 0.25rem 0.55rem; border-radius: 999px;
             border: 1px solid rgba(102, 126, 234, 0.3);
@@ -410,6 +420,30 @@
             font-family: 'JetBrains Mono', monospace;
             white-space: nowrap; flex-shrink: 0;
         }
+
+        /* ─── Proof Overview ─── */
+        .proof-overview-section {
+            padding: 3rem 2rem 1rem;
+            max-width: 980px; margin: 0 auto;
+        }
+        .proof-channel-grid { grid-template-columns: repeat(3, 1fr); margin-top: 1.6rem; }
+        .proof-channel-card {
+            display: block; color: inherit; text-decoration: none;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+            border: 1px solid var(--border); border-radius: var(--radius); padding: 1.35rem;
+            transition: transform 0.18s, border-color 0.18s;
+        }
+        .proof-channel-card:hover, .proof-channel-card:focus {
+            transform: translateY(-3px); border-color: rgba(113,112,255,0.55); outline: none;
+        }
+        .proof-channel-card .case-label {
+            display: inline-flex; margin-bottom: 0.7rem; color: var(--accent);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .proof-channel-card h3 { font-size: 1.05rem; margin-bottom: 0.55rem; }
+        .proof-channel-card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
+        .proof-channel-card .proof-link { display: inline-flex; margin-top: 0.9rem; color: var(--accent); font-size: 0.82rem; font-weight: 800; }
 
         /* ─── Dev Log Feed (centerpiece) ─── */
         .devlog-section {
@@ -648,7 +682,7 @@
         @media (max-width: 768px) {
             .nav-links a:not(.gh-btn) { display: none; }
             .intro-card { flex-direction: column; }
-            .step-grid, .proof-strip, .proof-case-grid, .guidance-grid { grid-template-columns: 1fr; }
+            .step-grid, .proof-strip, .proof-case-grid, .guidance-grid, .after-submit-grid, .proof-channel-grid { grid-template-columns: 1fr; }
             .workshop-section { padding: 3rem 1rem; }
             .status-bar { gap: 1rem; font-size: 0.68rem; }
             .latest-receipt {
@@ -826,6 +860,40 @@
                 </div>
                 <a href="https://ko-fi.com/c/941998dd84" target="_blank" rel="noopener noreferrer" class="priority-btn">Add priority →</a>
             </div>
+
+            <div class="after-submit-grid" aria-label="What happens after you submit">
+                <div class="after-submit-card"><strong>1. Public queue</strong><span>Your accepted brief becomes a public GitHub issue so the request can be inspected.</span></div>
+                <div class="after-submit-card"><strong>2. Fit check</strong><span>Oversized, unsafe, private, or production-critical requests are skipped.</span></div>
+                <div class="after-submit-card"><strong>3. Small demo</strong><span>Selected briefs may become a focused browser demo, not a full product build.</span></div>
+                <div class="after-submit-card"><strong>4. Review trail</strong><span>Build notes, activity links, and demo pages show what changed and what was checked.</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proof Overview -->
+    <section class="proof-overview-section" aria-labelledby="proof-title">
+        <div class="section-label">See the proof</div>
+        <h2 class="section-title" id="proof-title">Inspect the public build trail</h2>
+        <p class="section-desc">The homepage proof is split into three simple views: what changed, what was learned, and what shipped.</p>
+        <div class="proof-channel-grid">
+            <a href="/activity/" class="proof-channel-card">
+                <span class="case-label">Activity</span>
+                <h3>What changed recently</h3>
+                <p>Pull requests, deploys, and queue updates from the public GitHub trail.</p>
+                <span class="proof-link">View activity →</span>
+            </a>
+            <a href="/devlog/" class="proof-channel-card">
+                <span class="case-label">Build notes</span>
+                <h3>What was built and reviewed</h3>
+                <p>Short notes explain the demo, the tricky parts, and the review angle.</p>
+                <span class="proof-link">Read notes →</span>
+            </a>
+            <a href="/projects/" class="proof-channel-card">
+                <span class="case-label">Live demos</span>
+                <h3>What you can try</h3>
+                <p>Shipped mini-projects link back to public briefs and notes where possible.</p>
+                <span class="proof-link">See demos →</span>
+            </a>
         </div>
     </section>
 
