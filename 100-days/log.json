@@ -1,0 +1,62 @@
+[
+  {
+    "day": 1,
+    "date": "2026-06-03",
+    "type": "clarify",
+    "title": "Sharpen 100 days site framing",
+    "summary": "Made the daily improvement cadence clearer: one small reviewed change, one public receipt, one stronger site impression.",
+    "pr": 39,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/39",
+    "status": "merged"
+  },
+  {
+    "day": 2,
+    "date": "2026-06-04",
+    "type": "clarify",
+    "title": "Clarify business use case cards",
+    "summary": "Reworked the use-case cards so business visitors see concrete workflow experiments instead of vague AI claims.",
+    "pr": 40,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/40",
+    "status": "merged"
+  },
+  {
+    "day": 3,
+    "date": "2026-06-05",
+    "type": "replace",
+    "title": "Align projects page with proof framing",
+    "summary": "Adjusted the projects page copy to connect shipped demos back to proof, review context, and public build notes.",
+    "pr": 41,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/41",
+    "status": "merged"
+  },
+  {
+    "day": 4,
+    "date": "2026-06-06",
+    "type": "reduce",
+    "title": "Simplify homepage navigation",
+    "summary": "Reduced the primary navigation so first-time visitors have fewer choices and clearer paths into demos, proof, activity, and submission.",
+    "pr": 42,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/42",
+    "status": "merged"
+  },
+  {
+    "day": 5,
+    "date": "2026-06-06",
+    "type": "reduce",
+    "title": "Tighten homepage flow",
+    "summary": "Removed duplication and tightened the homepage sequence so proof, process, submission, and activity feel like one route instead of stacked explanations.",
+    "pr": 43,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/43",
+    "status": "merged"
+  },
+  {
+    "day": 6,
+    "date": "2026-06-06",
+    "type": "clarify",
+    "title": "Clarify proof and submit flow",
+    "summary": "Added clearer expectations around public briefs, fit checks, small demos, and the proof channels visitors can inspect.",
+    "pr": 44,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/44",
+    "status": "merged"
+  }
+]

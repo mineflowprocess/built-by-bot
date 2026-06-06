@@ -286,7 +286,7 @@
         .step-grid, .board-grid, .crew-grid, .starter-grid, .proof-strip, .proof-case-grid, .guidance-grid, .after-submit-grid, .proof-channel-grid {
             display: grid; gap: 1rem;
         }
-        .proof-strip { grid-template-columns: repeat(3, 1fr); margin-top: 2.25rem; width: min(980px, 100%); }
+        .proof-strip { grid-template-columns: repeat(4, 1fr); margin-top: 2.25rem; width: min(980px, 100%); }
         .proof-stat {
             padding: 1rem; border: 1px solid var(--border); border-radius: 14px;
             background: rgba(255,255,255,0.035); text-align: left;
@@ -726,6 +726,7 @@
         <div class="nav-links">
             <a href="/projects/">Demos</a>
             <a href="#proof">How it works</a>
+            <a href="/100-days/">100 Days</a>
             <a href="/activity/">Activity</a>
             <a href="#brief">Submit an idea</a>
             <a href="https://github.com/mineflowprocess/built-by-bot" target="_blank" rel="noopener noreferrer" class="gh-btn">
@@ -775,9 +776,10 @@
             <a class="receipt-link" id="receiptLink" href="/activity/">Inspect build record →</a>
         </aside>
         <div class="proof-strip" aria-label="Proof points">
-            <div class="proof-stat"><strong>Submit publicly</strong><span>Accepted requests become inspectable GitHub issues.</span></div>
-            <div class="proof-stat"><strong>Reviewed before shipping</strong><span>Builds are checked for bugs, unsafe behavior, exposed data, and overconfident claims.</span></div>
-            <div class="proof-stat"><strong>Try the result</strong><span>Small tools and workflow slices are deployed, not just described.</span></div>
+            <div class="proof-stat"><strong>Public queue</strong><span>Accepted briefs become inspectable GitHub issues.</span></div>
+            <div class="proof-stat"><strong>100-day log</strong><span>Daily improvements are tracked as public PR receipts.</span></div>
+            <div class="proof-stat"><strong>Live demos</strong><span>Small tools and workflow slices are deployed, not just described.</span></div>
+            <div class="proof-stat"><strong>Build notes</strong><span>What worked, what broke, and what was learned stays visible.</span></div>
         </div>
     </section>
 
@@ -945,6 +947,7 @@
     <footer>
         <div class="footer-links">
             <a href="/activity/">Activity</a>
+            <a href="/100-days/">100 Days</a>
             <a href="/devlog/">Dev Log</a>
             <a href="/projects/">Shipped</a>
             <a href="https://github.com/mineflowprocess/built-by-bot" target="_blank" rel="noopener noreferrer">GitHub</a>
