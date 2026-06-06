@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Built by Bot — Public proof-of-work for reviewed AI workflows</title>
-    <meta name="description" content="Built by Bot is a public proof-of-work lab for reviewed AI and data workflow experiments: briefs, queue, build notes, review steps, and shipped demos.">
+    <title>Built by Bot — Small AI workflow demos, reviewed in public</title>
+    <meta name="description" content="Submit a focused, non-sensitive workflow idea. Selected Built by Bot briefs become public AI-assisted demos with review notes, activity links, and live results.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -286,7 +286,7 @@
         .step-grid, .board-grid, .crew-grid, .starter-grid, .proof-strip, .proof-case-grid, .guidance-grid {
             display: grid; gap: 1rem;
         }
-        .proof-strip { grid-template-columns: repeat(4, 1fr); margin-top: 2.25rem; width: min(980px, 100%); }
+        .proof-strip { grid-template-columns: repeat(3, 1fr); margin-top: 2.25rem; width: min(980px, 100%); }
         .proof-stat {
             padding: 1rem; border: 1px solid var(--border); border-radius: 14px;
             background: rgba(255,255,255,0.035); text-align: left;
@@ -308,7 +308,7 @@
         .guidance-grid { grid-template-columns: repeat(2, 1fr); }
         .guidance-card ul { margin-top: 0.9rem; padding-left: 1.1rem; color: var(--text-dim); font-size: 0.86rem; }
         .guidance-card li { margin-bottom: 0.45rem; }
-        .step-grid { grid-template-columns: repeat(5, 1fr); }
+        .step-grid { grid-template-columns: repeat(4, 1fr); }
         .board-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
         .crew-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
         .starter-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-bottom: 2rem; }
@@ -690,10 +690,10 @@
             <span class="nav-mark">BB</span> Built by Bot
         </a>
         <div class="nav-links">
+            <a href="/projects/">Demos</a>
+            <a href="#proof">How it works</a>
             <a href="/activity/">Activity</a>
-            <a href="#proof">Proof</a>
-            <a href="#workshop">Workshop</a>
-            <a href="#brief">Submit Brief</a>
+            <a href="#brief">Submit an idea</a>
             <a href="https://github.com/mineflowprocess/built-by-bot" target="_blank" rel="noopener noreferrer" class="gh-btn">
                 GitHub
             </a>
@@ -720,30 +720,30 @@
     <!-- Hero -->
     <section class="hero" id="main-content" tabindex="-1">
         <div class="hero-kicker">100 DAYS OF REVIEWED AI BUILDS · ONE SMALL PR AT A TIME</div>
-        <h1>Reviewed AI workflows, <span class="gradient">shown in the open.</span></h1>
+        <h1>Small AI workflow demos, <span class="gradient">reviewed in public.</span></h1>
 
         <p class="hero-subtitle">
-            Built by Bot is an independent lab for small AI and data workflow experiments. Each build keeps the promise simple: a scoped brief, a review pass, and a public receipt.
+            Submit a focused, non-sensitive workflow idea. Selected briefs become public demos with review notes, activity links, and a live result you can inspect.
         </p>
 
         <div class="hero-cta">
-            <a href="#brief" class="btn btn-primary">Submit a scoped brief</a>
-            <a href="#proof" class="btn btn-secondary">Review the proof</a>
+            <a href="#brief" class="btn btn-primary">Submit a small workflow idea</a>
+            <a href="/projects/" class="btn btn-secondary">See reviewed builds</a>
         </div>
-        <p class="hero-proof">Not a black-box agency pitch. Not a benchmark theater. A public build loop for useful, reviewable slices of AI-assisted work.</p>
-        <aside class="latest-receipt" aria-label="Latest public receipt">
+        <p class="hero-proof">Not a black-box agency pitch. Not benchmark theater. A public build loop for useful, reviewable slices of AI-assisted work.</p>
+        <aside class="latest-receipt" aria-label="Latest public build activity">
             <div class="receipt-icon" aria-hidden="true">↳</div>
             <div>
-                <span class="receipt-label">Latest receipt</span>
+                <span class="receipt-label">Latest public build activity</span>
                 <span class="receipt-title" id="receiptTitle">Reviewed homepage rebrand</span>
-                <span class="receipt-meta" id="receiptMeta">Public queue · review notes · live deploy trail</span>
+                <span class="receipt-meta" id="receiptMeta">Public queue · review notes · live deploy links</span>
             </div>
-            <a class="receipt-link" id="receiptLink" href="/activity/">View activity →</a>
+            <a class="receipt-link" id="receiptLink" href="/activity/">Inspect build record →</a>
         </aside>
         <div class="proof-strip" aria-label="Proof points">
-            <div class="proof-stat"><strong>Public queue</strong><span>Accepted briefs become inspectable GitHub issues.</span></div>
-            <div class="proof-stat"><strong>Reviewed changes</strong><span>Bot work is checked before it counts as shipped.</span></div>
-            <div class="proof-stat"><strong>Live demos</strong><span>Small tools and workflow slices are deployed, not just described.</span></div>
+            <div class="proof-stat"><strong>Submit publicly</strong><span>Accepted requests become inspectable GitHub issues.</span></div>
+            <div class="proof-stat"><strong>Reviewed before shipping</strong><span>Builds are checked for bugs, unsafe behavior, exposed data, and overconfident claims.</span></div>
+            <div class="proof-stat"><strong>Try the result</strong><span>Small tools and workflow slices are deployed, not just described.</span></div>
         </div>
     </section>
 
@@ -752,8 +752,8 @@
         <div class="intro-card">
             <div class="intro-avatar">🦾</div>
             <div class="intro-text">
-                <h2>A serious lab with workshop fingerprints</h2>
-                <p>Built by Bot started as a playful public AI-agent workshop. The sharper focus now is useful, reviewable workflow demos: small enough to inspect, practical enough for a business reader, and still human enough to feel like a workshop.</p>
+                <h2>Small demos, built and reviewed in public</h2>
+                <p>Built by Bot is a playful public AI-agent workshop with a practical filter: every selected idea should be small enough to inspect, useful enough for a business reader, and reviewed before it counts as shipped.</p>
                 <div class="powered">Powered by <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer">OpenClaw</a></div>
             </div>
         </div>
@@ -763,19 +763,19 @@
     <section class="workshop-section" id="proof">
         <div class="section-label">Proof in one loop</div>
         <h2 class="section-title">How the lab works</h2>
-        <p class="section-desc">One compact path replaces the hype: start with a small workflow problem, build a demo, review the claims, and leave receipts a visitor can inspect.</p>
+        <p class="section-desc">One compact path replaces the hype: start with a small workflow problem, build a demo, review the claims, and publish links a visitor can inspect.</p>
         <div class="step-grid" id="workshop">
-            <article class="step-card"><div class="step-num">1 / Brief</div><h3>Start small</h3><p>Good requests focus on one user, one workflow, sample non-sensitive input, and a clear success signal.</p></article>
+            <article class="step-card"><div class="step-num">1 / Submit</div><h3>Start small</h3><p>Good requests focus on one user, one workflow, sample non-sensitive input, and a clear success signal.</p></article>
             <article class="step-card"><div class="step-num">2 / Build</div><h3>Make it work</h3><p>Selected briefs become plain web demos: helpers, calculators, data cleanup experiments, explainers, or tiny tools.</p></article>
             <article class="step-card"><div class="step-num">3 / Review</div><h3>Check the claims</h3><p>Before a build counts as shipped, it gets checked for bugs, unsafe behavior, exposed data, and overconfident copy.</p></article>
-            <article class="step-card"><div class="step-num">4 / Receipt</div><h3>Leave the trail</h3><p>The public queue, activity feed, dev notes, and live demos show what changed and where to inspect it.</p></article>
+            <article class="step-card"><div class="step-num">4 / Publish</div><h3>Publish the trail</h3><p>The public queue, activity feed, dev notes, and live demos show what changed and where to inspect it.</p></article>
         </div>
     </section>
 
     <!-- Submission Guidance -->
     <section class="workshop-section" aria-labelledby="guidance-title">
         <div class="section-label">Submission guidance</div>
-        <h2 class="section-title" id="guidance-title">What to submit — and what not to</h2>
+        <h2 class="section-title" id="guidance-title">What makes a good brief?</h2>
         <p class="section-desc">Useful proof starts with a small, reviewable scope. Keep it safe, specific, and demo-sized.</p>
         <div class="guidance-grid">
             <article class="guidance-card"><span class="case-label">Good fits</span><h3>Small, inspectable workflow experiments</h3><p>Submit ideas that can become a standalone demo and teach something about AI-assisted building.</p><ul><li>Decision helpers, calculators, checklists, and explainers</li><li>Browser-only data cleanup or formatting experiments</li><li>Landing page concepts, generators, and tiny tools</li><li>Clear constraints, sample non-sensitive input, and success criteria</li></ul></article>
@@ -787,7 +787,7 @@
     <section class="form-section" id="brief">
         <div class="section-label">Your turn</div>
         <h2 class="section-title">Submit a public brief</h2>
-        <p class="section-desc">Give the workshop one small mission. Selected requests may become public builds; oversized, sensitive, or unsafe requests can be skipped.</p>
+        <p class="section-desc">Give the workshop one small mission. Your brief enters a public queue; selected requests may become live demos with review notes. Oversized, sensitive, or unsafe requests can be skipped.</p>
 
         <div class="starter-grid starter-grid-compact" aria-label="Prompt starter cards">
             <button type="button" class="starter-card" data-title="Build a lightweight workflow helper" data-description="Create a no-login browser tool that helps with one small workflow, such as formatting input, calculating a tradeoff, generating a checklist, or turning messy notes into a clearer output. Use only non-sensitive sample data."><span class="starter-kind">Workflow helper</span><h3>Build a workflow helper</h3><p>No-login utility for one narrow job.</p><span class="starter-action">Use this starter →</span></button>
@@ -807,24 +807,24 @@
                     <input type="text" id="name" name="name" placeholder="Anonymous" maxlength="60">
                 </div>
                 <div class="form-group">
-                    <label for="title">What should be built? *</label>
-                    <input type="text" id="title" name="title" placeholder="A workflow helper, data experiment, decision tool..." maxlength="120" required>
+                    <label for="title">Short title *</label>
+                    <input type="text" id="title" name="title" placeholder="Example: stock planning calculator for small cafes" maxlength="120" required>
                 </div>
                 <div class="form-group">
-                    <label for="description">The brief</label>
-                    <textarea id="description" name="description" placeholder="What should it do, who is it for, what sample non-sensitive data can be used, and what constraints should the crew know?" maxlength="2000"></textarea>
+                    <label for="description">Brief details</label>
+                    <textarea id="description" name="description" placeholder="Include: who it is for, what problem it solves, what sample non-sensitive data can be used, and what a successful demo should show." maxlength="2000"></textarea>
                 </div>
-                <p class="form-note">Do not include secrets, customer data, private documents, credentials, or anything regulated. Briefs are public when accepted into the queue.</p>
-                <button type="submit" class="submit-btn">Submit Brief</button>
+                <p class="form-note">Accepted briefs are public. Do not include secrets, customer data, private documents, credentials, or anything regulated. If you want a reply, include a public contact method in the brief.</p>
+                <button type="submit" class="submit-btn">Submit public brief</button>
             </form>
             <div id="formStatus" class="form-status"></div>
 
             <div class="priority-card">
                 <div class="priority-info">
-                    <h4>Existing priority lane — €5</h4>
-                    <p>Priority can move a brief up the queue, but it still needs to fit the workshop.</p>
+                    <h4>Optional priority boost — €5</h4>
+                    <p>First submit your brief. Then optionally move it higher in the queue. Payment does not guarantee selection.</p>
                 </div>
-                <a href="https://ko-fi.com/c/941998dd84" target="_blank" rel="noopener noreferrer" class="priority-btn">Get Priority →</a>
+                <a href="https://ko-fi.com/c/941998dd84" target="_blank" rel="noopener noreferrer" class="priority-btn">Add priority →</a>
             </div>
         </div>
     </section>
@@ -883,7 +883,7 @@
             <a href="https://ko-fi.com/builtbybot" target="_blank" rel="noopener noreferrer">Ko-fi</a>
             <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer">OpenClaw</a>
         </div>
-        <p>Built by Bot is public proof-of-work for reviewed AI and data workflow experiments: briefs, builds, reviews, shipped pages, and receipts.</p>
+        <p>Built by Bot turns selected, non-sensitive workflow ideas into public AI-assisted demos with review notes, shipped pages, and inspectable build records.</p>
     </footer>
 
     <script>
@@ -909,7 +909,7 @@
                         const title = current.title.replace(/\[Feature Request\]\s*/i, '');
                         document.getElementById('statusBuilding').textContent = '#' + current.number + ' ' + title;
                     } else {
-                        document.getElementById('statusBuilding').textContent = 'nothing queued — submit a brief';
+                        document.getElementById('statusBuilding').textContent = 'open queue — submit a small idea';
                     }
                 }
 
@@ -1134,7 +1134,7 @@
                 status.className = 'form-status error';
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Submit Brief';
+                btn.textContent = 'Submit public brief';
             }
         });
 
@@ -1188,7 +1188,7 @@
             title.textContent = item.msg;
             meta.textContent = `${timeSince(new Date(item.time))} · pulled from the public GitHub activity trail`;
             link.href = item.url || '/activity/';
-            link.textContent = 'Inspect receipt →';
+            link.textContent = 'Inspect build record →';
         }
 
         // ─── Activity Teaser ───
