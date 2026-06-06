@@ -58,5 +58,15 @@
     "pr": 44,
     "url": "https://github.com/mineflowprocess/built-by-bot/pull/44",
     "status": "merged"
+  },
+  {
+    "day": 7,
+    "date": "2026-06-06",
+    "type": "add",
+    "title": "Add public 100 days improvement log",
+    "summary": "Added a public page and JSON log so the daily improvement cadence can be inspected on the site, not only in private notes.",
+    "pr": 45,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/45",
+    "status": "open"
   }
 ]
