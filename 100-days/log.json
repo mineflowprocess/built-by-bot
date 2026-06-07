@@ -75,8 +75,8 @@
     "type": "fix",
     "title": "Correct public log receipt status",
     "summary": "Corrected the latest public receipt status so visitors see an accurate merged count and a fresh reviewable PR entry without adding another homepage section.",
-    "pr": null,
-    "url": "",
+    "pr": 46,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/46",
     "status": "open"
   }
 ]
