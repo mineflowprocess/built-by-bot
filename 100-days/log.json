@@ -67,6 +67,16 @@
     "summary": "Added a public page and JSON log so the daily improvement cadence can be inspected on the site, not only in private notes.",
     "pr": 45,
     "url": "https://github.com/mineflowprocess/built-by-bot/pull/45",
+    "status": "merged"
+  },
+  {
+    "day": 8,
+    "date": "2026-06-07",
+    "type": "fix",
+    "title": "Correct public log receipt status",
+    "summary": "Corrected the latest public receipt status so visitors see an accurate merged count and a fresh reviewable PR entry without adding another homepage section.",
+    "pr": 46,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/46",
     "status": "open"
   }
 ]
