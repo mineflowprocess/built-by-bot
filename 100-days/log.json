@@ -77,6 +77,16 @@
     "summary": "Corrected the latest public receipt status so visitors see an accurate merged count and a fresh reviewable PR entry without adding another homepage section.",
     "pr": 46,
     "url": "https://github.com/mineflowprocess/built-by-bot/pull/46",
+    "status": "merged"
+  },
+  {
+    "day": 9,
+    "date": "2026-06-08",
+    "type": "clarify",
+    "title": "Clarify improvement log status",
+    "summary": "Made open and merged receipt states easier to scan on the public improvement log without adding another section or card.",
+    "pr": 0,
+    "url": "",
     "status": "open"
   }
 ]

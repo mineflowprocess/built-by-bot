@@ -89,11 +89,14 @@
         .day-badge strong { font-size: 1.1rem; }
         .log-card h3 { font-size: 1.06rem; margin: 0.18rem 0 0.35rem; }
         .log-card .meta { color: var(--green); }
-        .type-pill {
+        .type-pill, .status-pill {
             display: inline-flex; border: 1px solid rgba(49,209,88,0.24); color: var(--green);
             border-radius: 999px; padding: 0.24rem 0.55rem; font-family: 'JetBrains Mono', monospace;
             font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
         }
+        .status-pill { margin-left: 0.45rem; border-color: rgba(124,140,255,0.28); color: var(--accent); }
+        .status-pill[data-status="merged"] { border-color: rgba(49,209,88,0.28); color: var(--green); }
+        .status-pill[data-status="open"] { border-color: rgba(245,196,81,0.35); color: var(--yellow); }
         .pr-link { color: var(--accent); text-decoration: none; font-weight: 800; white-space: nowrap; }
         .pr-link:hover { color: var(--pink); }
         .empty { color: var(--text-dim); padding: 1.5rem; border: 1px dashed var(--border); border-radius: var(--radius); }
@@ -177,7 +180,7 @@
                     <article class="log-card">
                         <div class="day-badge"><small>Day</small><strong>${esc(entry.day)}</strong></div>
                         <div>
-                            <div class="meta">${esc(entry.date)} · ${esc(entry.status || 'planned')}</div>
+                            <div class="meta">${esc(entry.date)} <span class="status-pill" data-status="${esc(entry.status || 'planned')}">${esc(entry.status || 'planned')}</span></div>
                             <h3>${esc(entry.title)}</h3>
                             <p>${esc(entry.summary)}</p>
                         </div>
