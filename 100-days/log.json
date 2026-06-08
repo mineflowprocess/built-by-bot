@@ -85,8 +85,8 @@
     "type": "clarify",
     "title": "Clarify improvement log status",
     "summary": "Made open and merged receipt states easier to scan on the public improvement log without adding another section or card.",
-    "pr": 0,
-    "url": "",
+    "pr": 47,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/47",
     "status": "open"
   }
 ]
