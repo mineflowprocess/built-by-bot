@@ -95,8 +95,8 @@
     "type": "fix",
     "title": "Fix public log receipt accuracy",
     "summary": "Corrected a stale receipt state and logged today's reviewable PR so visitors can trust the 100-day proof trail without adding more homepage content.",
-    "pr": null,
-    "url": "",
+    "pr": 48,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/48",
     "status": "open"
   }
 ]
