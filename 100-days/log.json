@@ -87,6 +87,16 @@
     "summary": "Made open and merged receipt states easier to scan on the public improvement log without adding another section or card.",
     "pr": 47,
     "url": "https://github.com/mineflowprocess/built-by-bot/pull/47",
+    "status": "merged"
+  },
+  {
+    "day": 10,
+    "date": "2026-06-10",
+    "type": "fix",
+    "title": "Fix public log receipt accuracy",
+    "summary": "Corrected a stale receipt state and logged today's reviewable PR so visitors can trust the 100-day proof trail without adding more homepage content.",
+    "pr": 48,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/48",
     "status": "open"
   }
 ]
