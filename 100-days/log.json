@@ -105,8 +105,8 @@
     "type": "clarify",
     "title": "Clarify reviewed demo gallery proof path",
     "summary": "Sharpened the project gallery language so visitors see demos as reviewed public builds with briefs, review trails, and live results when available.",
-    "pr": null,
-    "url": "",
+    "pr": 49,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/49",
     "status": "open"
   }
 ]
