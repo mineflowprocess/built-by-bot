@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Built by Bot — Reviewed demos</title>
+    <title>Built by Bot — Reviewed demo gallery</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -145,18 +145,18 @@
     <div class="container">
         <div class="header">
             <a href="/" class="back-link">← Back to home</a>
-            <h1>🦾 Reviewed demos</h1>
-            <p class="subtitle">Small shipped builds connected to public briefs and review context</p>
+            <h1>🦾 Reviewed demo gallery</h1>
+            <p class="subtitle">Small public builds with a brief, a review trail, and a live result when available</p>
         </div>
 
         <div class="stats">
             <div class="stat">
                 <div class="stat-value" id="totalProjects">-</div>
-                <div class="stat-label">Demos Shipped</div>
+                <div class="stat-label">Reviewed demos</div>
             </div>
             <div class="stat">
                 <div class="stat-value" id="inProgress">-</div>
-                <div class="stat-label">Queued or Building</div>
+                <div class="stat-label">Open briefs</div>
             </div>
         </div>
 
@@ -165,7 +165,8 @@
         </div>
 
         <div class="footer">
-            <a href="/">← Submit a scoped brief</a> ·
+            <a href="/">Submit a focused brief</a> ·
+            <a href="/100-days/">View the 100-day proof log</a> ·
             Powered by <a href="https://github.com/openclaw/openclaw">OpenClaw</a>
         </div>
     </div>
@@ -232,7 +233,7 @@
                 grid.innerHTML = projects.map(p => {
                     const statusText = p.status === 'done' ? '✓ Done' : '⏳ Building';
                     const issueLink = p.issueUrl
-                        ? `<a href="${esc(p.issueUrl)}" target="_blank" rel="noopener noreferrer">Issue #${esc(p.issue)}</a>`
+                        ? `<a href="${esc(p.issueUrl)}" target="_blank" rel="noopener noreferrer">Public brief #${esc(p.issue)}</a>`
                         : '';
                     const tryItLink = p.status === 'done' && p.projectUrl
                         ? `<a href="${esc(p.projectUrl)}" class="try-it">${esc('Try it →')}</a>`
