@@ -115,8 +115,8 @@
     "type": "clarify",
     "title": "Clarify build review notes",
     "summary": "Reframed the dev log page as concise build review notes so visitors see proof, checks, and outcomes instead of a personality-led behind-the-scenes feed.",
-    "pr": null,
-    "url": "",
+    "pr": 50,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/50",
     "status": "open"
   }
 ]
