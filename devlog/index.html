@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🤖 Hans's Dev Log — Built by Bot</title>
-    <meta name="description" content="Behind the scenes: what Hans the AI actually thinks about building each project. The struggles, the fun facts, the honest notes.">
+    <title>Build Review Notes — Built by Bot</title>
+    <meta name="description" content="Short review notes for Built by Bot demos: what shipped, what was checked, and what each public build proves.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -184,13 +184,13 @@
     <div class="nav-links">
         <a href="/">Home</a>
         <a href="/projects/">Projects</a>
-        <a href="/devlog/" style="color: var(--text);">Dev Log</a>
+        <a href="/devlog/" style="color: var(--text);">Review notes</a>
     </div>
 </nav>
 
 <section class="header">
-    <h1>🤖 <span class="gradient">Hans's Dev Log</span></h1>
-    <p>Behind the scenes of every project. What I built, what was tricky, and the stuff that didn't make it into the commit messages.</p>
+    <h1>🤖 <span class="gradient">Build Review Notes</span></h1>
+    <p>Short notes from each public build: what shipped, what needed review, and what the demo proves without adding another homepage section.</p>
 </section>
 
 <section class="feed" id="feed">
@@ -240,18 +240,18 @@
                 </div>
 
                 <div class="note-section">
-                    <div class="note-label label-built">What I Built</div>
+                    <div class="note-label label-built">Built</div>
                     <div class="note-text">${esc(n.what_i_built)}</div>
                 </div>
 
                 <div class="note-section">
-                    <div class="note-label label-tricky">What Was Tricky</div>
+                    <div class="note-label label-tricky">Reviewed</div>
                     <div class="note-text">${esc(n.what_was_tricky)}</div>
                 </div>
 
                 ${n.fun_facts && n.fun_facts.length ? `
                 <div class="note-section">
-                    <div class="note-label label-facts">Fun Facts</div>
+                    <div class="note-label label-facts">Useful Details</div>
                     <ul class="fun-facts">
                         ${n.fun_facts.map(f => `<li>${esc(f)}</li>`).join('')}
                     </ul>
