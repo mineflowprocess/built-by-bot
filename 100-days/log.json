@@ -107,6 +107,16 @@
     "summary": "Sharpened the project gallery language so visitors see demos as reviewed public builds with briefs, review trails, and live results when available.",
     "pr": 49,
     "url": "https://github.com/mineflowprocess/built-by-bot/pull/49",
+    "status": "merged"
+  },
+  {
+    "day": 12,
+    "date": "2026-06-17",
+    "type": "clarify",
+    "title": "Clarify build review notes",
+    "summary": "Reframed the dev log page as concise build review notes so visitors see proof, checks, and outcomes instead of a personality-led behind-the-scenes feed.",
+    "pr": null,
+    "url": "",
     "status": "open"
   }
 ]
