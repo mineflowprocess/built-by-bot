@@ -117,6 +117,16 @@
     "summary": "Reframed the dev log page as concise build review notes so visitors see proof, checks, and outcomes instead of a personality-led behind-the-scenes feed.",
     "pr": 50,
     "url": "https://github.com/mineflowprocess/built-by-bot/pull/50",
+    "status": "merged"
+  },
+  {
+    "day": 13,
+    "date": "2026-06-18",
+    "type": "clarify",
+    "title": "Clarify demo gallery status labels",
+    "summary": "Tightened the project gallery labels so visitors can distinguish published demos from queued briefs and find live demos faster without adding new cards.",
+    "pr": null,
+    "url": "",
     "status": "open"
   }
 ]
