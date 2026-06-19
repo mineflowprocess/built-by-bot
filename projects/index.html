@@ -94,8 +94,8 @@
             color: #27ca40;
         }
         .project-status.in-progress {
-            background: rgba(255, 193, 7, 0.2);
-            color: #ffc107;
+            background: rgba(102, 126, 234, 0.18);
+            color: #9aa8ff;
         }
         .project-description {
             color: #888;
@@ -152,11 +152,11 @@
         <div class="stats">
             <div class="stat">
                 <div class="stat-value" id="totalProjects">-</div>
-                <div class="stat-label">Reviewed demos</div>
+                <div class="stat-label">Published demos</div>
             </div>
             <div class="stat">
                 <div class="stat-value" id="inProgress">-</div>
-                <div class="stat-label">Open briefs</div>
+                <div class="stat-label">Queued briefs</div>
             </div>
         </div>
 
@@ -231,12 +231,12 @@
                 }
                 
                 grid.innerHTML = projects.map(p => {
-                    const statusText = p.status === 'done' ? '✓ Done' : '⏳ Building';
+                    const statusText = p.status === 'done' ? '✓ Published' : '→ Queued brief';
                     const issueLink = p.issueUrl
                         ? `<a href="${esc(p.issueUrl)}" target="_blank" rel="noopener noreferrer">Public brief #${esc(p.issue)}</a>`
                         : '';
                     const tryItLink = p.status === 'done' && p.projectUrl
-                        ? `<a href="${esc(p.projectUrl)}" class="try-it">${esc('Try it →')}</a>`
+                        ? `<a href="${esc(p.projectUrl)}" class="try-it">${esc('Try live demo →')}</a>`
                         : '';
 
                     return `
