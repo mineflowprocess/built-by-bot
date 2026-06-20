@@ -135,8 +135,8 @@
     "type": "reduce",
     "title": "Remove duplicate homepage intro",
     "summary": "Removed a repeated intro card and its unused styles so the homepage moves faster from the hero proof points into the review loop.",
-    "pr": null,
-    "url": "",
+    "pr": 52,
+    "url": "https://github.com/mineflowprocess/built-by-bot/pull/52",
     "status": "open"
   }
 ]
