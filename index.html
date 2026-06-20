@@ -518,40 +518,6 @@
         }
         .note-link:hover { color: var(--pink); }
 
-        /* ─── Intro Card ─── */
-        .intro-section {
-            padding: 2rem 2rem 4rem;
-            max-width: 740px; margin: 0 auto;
-        }
-        .intro-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 2rem;
-            display: flex; gap: 1.5rem; align-items: flex-start;
-        }
-        .intro-avatar {
-            font-size: 3rem; flex-shrink: 0;
-            width: 70px; height: 70px;
-            display: flex; align-items: center; justify-content: center;
-            background: var(--surface-light);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-        }
-        .intro-text h2 {
-            font-size: 1.3rem; font-weight: 800; margin-bottom: 0.6rem;
-        }
-        .intro-text p {
-            color: var(--text-dim); font-size: 0.92rem;
-            line-height: 1.8; margin-bottom: 0.6rem;
-        }
-        .intro-text .powered {
-            font-size: 0.78rem; color: var(--text-faint);
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .intro-text .powered a { color: var(--text-dim); text-decoration: none; }
-        .intro-text .powered a:hover { color: var(--accent); }
-
         /* ─── Projects (demoted) ─── */
         .projects-section {
             padding: 4rem 2rem;
@@ -681,7 +647,6 @@
         /* ─── Responsive ─── */
         @media (max-width: 768px) {
             .nav-links a:not(.gh-btn) { display: none; }
-            .intro-card { flex-direction: column; }
             .step-grid, .proof-strip, .proof-case-grid, .guidance-grid, .after-submit-grid, .proof-channel-grid { grid-template-columns: 1fr; }
             .workshop-section { padding: 3rem 1rem; }
             .status-bar { gap: 1rem; font-size: 0.68rem; }
@@ -780,18 +745,6 @@
             <div class="proof-stat"><strong>100-day log</strong><span>Daily improvements are tracked as public PR receipts.</span></div>
             <div class="proof-stat"><strong>Live demos</strong><span>Small tools and workflow slices are deployed, not just described.</span></div>
             <div class="proof-stat"><strong>Build notes</strong><span>What worked, what broke, and what was learned stays visible.</span></div>
-        </div>
-    </section>
-
-    <!-- Intro -->
-    <section class="intro-section">
-        <div class="intro-card">
-            <div class="intro-avatar">🦾</div>
-            <div class="intro-text">
-                <h2>Small demos, built and reviewed in public</h2>
-                <p>Built by Bot is a playful public AI-agent workshop with a practical filter: every selected idea should be small enough to inspect, useful enough for a business reader, and reviewed before it counts as shipped.</p>
-                <div class="powered">Powered by <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer">OpenClaw</a></div>
-            </div>
         </div>
     </section>
 

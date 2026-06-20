@@ -127,6 +127,16 @@
     "summary": "Tightened the project gallery labels so visitors can distinguish published demos from queued briefs and find live demos faster without adding new cards.",
     "pr": 51,
     "url": "https://github.com/mineflowprocess/built-by-bot/pull/51",
+    "status": "merged"
+  },
+  {
+    "day": 14,
+    "date": "2026-06-20",
+    "type": "reduce",
+    "title": "Remove duplicate homepage intro",
+    "summary": "Removed a repeated intro card and its unused styles so the homepage moves faster from the hero proof points into the review loop.",
+    "pr": null,
+    "url": "",
     "status": "open"
   }
 ]
